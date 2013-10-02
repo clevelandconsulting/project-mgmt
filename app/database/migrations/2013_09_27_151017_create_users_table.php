@@ -17,6 +17,9 @@ class CreateUsersTable extends Migration {
 			$table->string('username');
 			$table->string('password');
 			$table->string('email');
+			$table->string('first_name')->nullable();
+			$table->string('last_name')->nullable();
+			$table->integer('basecamp_id')->nullable();
 			$table->timestamps();
 		});
 	}

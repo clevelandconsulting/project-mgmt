@@ -3,6 +3,8 @@
 
 class AuthTest extends TestCase {
 	
+	protected $useDatabase = true;
+	
 	function test_user_noUser_returnsNull() {
 		$result = Auth::user();
 		

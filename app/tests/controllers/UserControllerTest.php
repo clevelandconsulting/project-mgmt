@@ -129,5 +129,21 @@ class UserControllerTest extends ResourceControllerTestCase {
 		$this->assertEquals($expectedResponse,$actualResponse);
 	}
 	
+	public function test_basecampUpdate_whenSuccesful_returnsHttpOK() {
+		$this->mockedRepository->shouldReceive('basecampUpdate')->once()->andReturn(true);
+		
+		$response = $this->apiCall('GET','/basecamp/update');
+		
+		$this->assertResponseOk();
+	}
+	
+	public function test_basecampUpdate_whenUnSuccesful_returnsHttp500() {
+		$this->mockedRepository->shouldReceive('basecampUpdate')->once()->andReturn(false);
+		
+		$response = $this->apiCall('GET','/basecamp/update');
+		
+		$this->assertResponseStatus(500);
+	}
+	
 	
 }

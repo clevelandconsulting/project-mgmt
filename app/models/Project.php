@@ -22,4 +22,23 @@ class Project extends CciEloquent {
 	public function times() {
 		return $this->hasMany('Time');
 	}
+	
+	public function hoursToBeWorked() {
+		if ( $this->times()->count() == 0 && $this->payments()->count() == 0 ) return 0;
+		else {
+			$hoursWorked = 0;
+			$hoursPaid = 0;
+			
+			foreach($this->times()->get() as $time) {
+				$hoursWorked += $time->hrs;
+			}
+			
+			foreach($this->payments()->get() as $payment ) {
+				$hoursPaid += $payment->hrs;	
+			}
+			
+			return $hoursPaid - $hoursWorked;
+			//return 3-2;
+		}
+	}
 }

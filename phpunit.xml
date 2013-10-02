@@ -18,4 +18,9 @@
             <directory>./app/tests-integration/</directory>
         </testsuite>
     </testsuites>
+    
+    <php>
+        <ini name="memory_limit" value="256M" />
+    </php>
+    
 </phpunit>

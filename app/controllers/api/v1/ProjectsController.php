@@ -58,7 +58,7 @@ class ProjectsController extends apiController {
 	}
 	
 	public function syncBasecamp() {
-		$result = $this->project->updateBasecamp();
+		$result = $this->project->basecampUpdate();
 		if ( $result ) {
 			return Response::json('',200);
 		} else {

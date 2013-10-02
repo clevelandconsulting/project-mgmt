@@ -1,5 +1,9 @@
 <?php
 
+App::instance('Cci/Basecamp/BasecampService', function() {
+	return App::make('basecamp');
+});
+
 /*
 |--------------------------------------------------------------------------
 | Register The Laravel Class Loader

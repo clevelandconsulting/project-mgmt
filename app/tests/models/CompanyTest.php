@@ -2,6 +2,8 @@
 
 class CompanyTest extends TestCase {
 
+	protected $useDatabase = true;
+
 	public function test_projects_whenCalled_returnsCollection() {
 		$company = new Company();
 		

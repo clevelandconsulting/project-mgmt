@@ -3,6 +3,7 @@
 class UserTest extends TestCase {
 
 	protected $user;
+	protected $useDatabase = true;
 
 	public function setUp() {
 		parent::setUp();

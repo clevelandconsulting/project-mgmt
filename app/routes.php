@@ -33,6 +33,7 @@ Route::group(array('prefix'=>'api/v1'), function() {
 		Route::resource('times', 'api\v1\TimesController');
 		
 		Route::get('projects/basecamp/update', 'api\v1\ProjectsController@syncBasecamp');
+		Route::get('users/basecamp/update', 'api\v1\UsersController@syncBasecamp');
 	});
 });
 

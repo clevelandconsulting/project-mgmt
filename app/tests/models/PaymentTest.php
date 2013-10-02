@@ -2,6 +2,7 @@
 
 class PaymentTest extends TestCase {
 	protected $payment;
+	protected $useDatabase = true;
 
 	public function setUp() {
 		parent::setUp();

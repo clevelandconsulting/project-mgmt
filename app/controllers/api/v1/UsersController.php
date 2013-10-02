@@ -66,5 +66,14 @@ class UsersController extends apiController {
 		
 		return Response::json(array('flash'=>$flash),$status);
 	}
+	
+	public function syncBasecamp() {
+		$result = $this->user->basecampUpdate();
+		if ( $result ) {
+			return Response::json('',200);
+		} else {
+			return Response::json('',500);
+		}
+	}
 
 }

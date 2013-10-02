@@ -114,7 +114,8 @@ return array(
 		'Illuminate\View\ViewServiceProvider',
 		'Illuminate\Workbench\WorkbenchServiceProvider',
 		'Way\Generators\GeneratorsServiceProvider',
-		'Cci\cciServiceProvider'
+		'Cci\cciServiceProvider',
+		'Cci\Basecamp\BasecampServiceProvider'
 	),
 
 	/*

@@ -13,5 +13,9 @@ class EloquentTimeRepository implements Interfaces\TimeRepositoryInterface {
 	public function find($id) {
 		return Time::find($id);
 	}
+	
+	public function count() {
+		return (integer) Time::count();
+	}
 
 }

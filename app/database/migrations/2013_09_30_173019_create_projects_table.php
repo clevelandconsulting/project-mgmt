@@ -19,8 +19,8 @@ class CreateProjectsTable extends Migration {
 			$table->string('name');
 			$table->string('basecamp_url');
 			$table->string('status');
-			$table->string('type');
-			$table->text('description');
+			$table->string('type')->nullable();
+			$table->text('description')->nullable();
 			$table->timestamps();
 		});
 	}

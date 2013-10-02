@@ -14,9 +14,6 @@ class cciServiceProvider extends ServiceProvider {
       'Cci\Services\cciLoginService'
     );
     
-    $this->app->bind('Cci\Services\BasecampService');
-
-    
     $this->app->bind(
       'Cci\Repositories\Interfaces\CompanyRepositoryInterface',
       'Cci\Repositories\EloquentCompanyRepository'
@@ -33,6 +30,11 @@ class cciServiceProvider extends ServiceProvider {
     );
     
     $this->app->bind(
+      'Cci\Repositories\Interfaces\ProjectUserRepositoryInterface',
+      'Cci\Repositories\EloquentProjectUserRepository'
+    );
+    
+    $this->app->bind(
       'Cci\Repositories\Interfaces\TimeRepositoryInterface',
       'Cci\Repositories\EloquentTimeRepository'
     );
@@ -41,8 +43,6 @@ class cciServiceProvider extends ServiceProvider {
       'Cci\Repositories\Interfaces\UserRepositoryInterface',
       'Cci\Repositories\EloquentUserRepository'
     );
-    //echo "<pre><code>";
-    //dd($this->app->getBindings());
     
   }
  

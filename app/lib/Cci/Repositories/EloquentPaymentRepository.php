@@ -13,5 +13,9 @@ class EloquentPaymentRepository implements Interfaces\PaymentRepositoryInterface
 	public function find($id) {
 		return Payment::find($id);
 	}
+	
+	public function count() {
+		return (integer) Payment::count();
+	}
 
 }
