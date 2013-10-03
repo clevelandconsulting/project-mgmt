@@ -4,6 +4,11 @@
 
 	RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
-    #RewriteRule ^ index.php [L]
-    RewriteRule ^(.+)$ /index.php/$1 [NC,L,QSA]
+    #RewriteRule ^(.+)$ /index.php/$1 [NC,L,QSA]
+    #ORIGINAL LARAVEL - RewriteRule ^ index.php [L]
+    
+    #RewriteCond %{REQUEST_FILENAME} /api/$
+    RewriteBase /api
+    RewriteRule ^(.+)$ /api.php/$1 [NC,L,QSA] 
+    
 </IfModule>
