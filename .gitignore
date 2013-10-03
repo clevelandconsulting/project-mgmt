@@ -1,5 +1,5 @@
-/l4/bootstrap/compiled.php
-/l4/vendor
-/l4/composer.phar
-/l4/composer.lock
+/api/bootstrap/compiled.php
+/api/vendor
+/api/composer.phar
+/api/composer.lock
 .DS_Store
