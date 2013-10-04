@@ -1,0 +1,25 @@
+<div class='container'>
+	<h1 class='center'>CCI Managment</h1>
+	<div class="hero-unit">
+		<h2>Login</h2>
+		<form class='form-horizontal' role='form'>
+			<div class='control-group'>
+				<label class='control-label' for='username'>Username</label>
+				<div class='controls'>
+					<input type='text' placeholder='Username' name='username' ng-model='credentials.username'>
+				</div>
+			</div>
+			<div class='control-group'>
+				<label class='control-label' for='password'>Password</label>
+				<div class='controls'>
+					<input type='password' placeholder='Password' name='password' ng-model='credentials.password'>
+				</div>
+			</div>
+			<div class='control-group'>
+				<div class='controls'>
+					<button class='btn btn-primary' ng-click='login(credentials)'>Login</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
