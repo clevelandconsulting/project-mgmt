@@ -6,10 +6,9 @@ describe('Service: ApiService', function () {
   beforeEach(module('frontendApp'));
 
   // instantiate service
-  var ApiService, httpBackend, http, q;
-  beforeEach(inject(function (_ApiService_, $httpBackend, $http, $q) {
+  var ApiService, httpBackend, http;
+  beforeEach(inject(function (_ApiService_, $httpBackend, $http) {
   	http = $http;
-  	q = $q;
   	httpBackend = $httpBackend;
   	
     ApiService = _ApiService_;

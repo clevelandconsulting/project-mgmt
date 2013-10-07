@@ -55,6 +55,10 @@ module.exports = function (grunt) {
           '{.tmp,<%= yeoman.app %>}/scripts/{,*/}*.js',
           '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
         ]
+      },
+      test: {
+        files: ['test/spec/{,*/}*.js', '<%= yeoman.app %>/scripts/{,*/}*.js'],
+        tasks: ['karma']
       }
     },
     autoprefixer: {
@@ -366,6 +370,14 @@ module.exports = function (grunt) {
     'autoprefixer',
     'connect:test',
     'karma'
+  ]);
+  
+  grunt.registerTask('testing', [
+  	'clean:server',
+  	'concurrent:test',
+  	'autoprefixer',
+  	'connect:test',
+  	'watch:test'
   ]);
 
   grunt.registerTask('build', [
