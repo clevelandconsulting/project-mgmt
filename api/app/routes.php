@@ -17,12 +17,20 @@ Route::get('/api', function()
 });
 
 
-Route::disableFilters(true);
+//Route::disableFilters(true);
 
 Route::group(array('prefix'=>'api/v1'), function() {
 
-	Route::post('login','api\v1\UsersController@login');
+	
+	Route::get('csrf', function() {
+		return Response::json(Session::token(),200);
+	});
+	
 	Route::get('logout', 'api\v1\UsersController@logout');
+
+	Route::group(array('before'=>'csrf'), function() {
+		Route::post('login','api\v1\UsersController@login');	
+	});
 	
 	Route::group(array('before'=>'api.auth'), function() {
 

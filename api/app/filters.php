@@ -77,8 +77,9 @@ Route::filter('guest', function()
 
 Route::filter('csrf', function()
 {
-	if (Session::token() != Input::get('_token'))
+	if (Session::token() != Input::json('_token'))
 	{
-		throw new Illuminate\Session\TokenMismatchException;
+		return Response::json('BAD TOKEN: ' . Input::json('_token') . " : " . Session::token() ,500);
+		//throw new Illuminate\Session\TokenMismatchException;
 	}
 });

@@ -1,4 +1,9 @@
 <?php
+if ($_SERVER['REQUEST_METHOD']=='OPTIONS') {
+//header('Access-Control-Allow-Origin : *');
+//header('Access-Control-Allow-Methods : POST, GET, OPTIONS, PUT, DELETE');
+//header('Access-Control-Allow-Headers : X-Requested-With, content-type');
+}else{
 /**
  * Laravel - A PHP Framework For Web Artisans
  *
@@ -60,3 +65,4 @@ $app->run();
 */
 
 $app->shutdown();
+}

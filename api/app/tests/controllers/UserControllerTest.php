@@ -86,7 +86,6 @@ class UserControllerTest extends ResourceControllerTestCase {
 		
 		$actualResponse = $this->buildActualResponseArray($this->apiCall('POST','/login', false),true);
 		
-		
 		$this->assertEquals($expectedResponse,$actualResponse);
 	}
 	

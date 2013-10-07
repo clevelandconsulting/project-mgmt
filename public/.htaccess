@@ -1,6 +1,20 @@
+<ifModule mod_headers.c>
+	
+	Header set Access-Control-Allow-Origin "*"
+	Header set Access-Control-Allow-Headers "Origin, X-Requested-With, Content-Type"
+	Header set Access-Control-Allow-Methods "GET, POST, OPTIONS, PUT, DELETE, PATCH"
+	#Header add Access-Control-Allow-Methods: POST
+	#Header add Access-Control-Allow-Methods: OPTIONS
+	
+	#Header set Access-Control-Max-Age: 86400
+</ifModule>
+
 <IfModule mod_rewrite.c>
     Options -MultiViews
+    Allow from all
     RewriteEngine On
+
+	#RewriteRule ^frontend - [L,NC]
 
 	RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
@@ -9,6 +23,6 @@
     
     #RewriteCond %{REQUEST_FILENAME} /api/$
     RewriteBase /api
-    RewriteRule ^(.+)$ /api.php/$1 [NC,L,QSA] 
+    RewriteRule ^(.+)$ /api.php/$1 [NC,L,QSA]
     
 </IfModule>

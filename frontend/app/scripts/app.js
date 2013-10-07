@@ -5,7 +5,16 @@ angular.module('frontendApp', [])
     $routeProvider
       .when('/login', {
         templateUrl: 'views/login.html',
-        controller: 'LoginCtrl'
+        controller: 'LoginCtrl',
+        resolve: {
+        	'Csrf': function(ApiService) {
+			 	return ApiService.csrf();
+			 }
+		 }
+      })
+      .when('/clients', {
+        templateUrl: 'views/clients.html',
+        controller: 'ClientsCtrl'
       })
       .otherwise({
         redirectTo: '/login'

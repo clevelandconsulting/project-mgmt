@@ -4,15 +4,34 @@ angular.module('frontendApp')
   .factory('ApiService', function ($http) {
     // Service logic
     // ...
-	var baseUrl = '/api';
+	var apiUrl = 'http://cci-project-mgmt.dev/api';
+	
+	var options = {
+		version: 'v1',
+	};
+	
+	var baseUrl = apiUrl + '/' + options.version;
     
-
     // Public API here
     return {
       baseUrl: baseUrl,
-      authUrl: baseUrl + '/auth',
-      auth: function (credentials) {
-      	return $http.post(this.authUrl);
+      loginUrl: baseUrl + '/login',
+      logoutUrl: baseUrl + '/logout',
+      csrfUrl: baseUrl + '/csrf',
+      login: function (credentials, token) {
+      	var parameters = {
+	      	username: credentials.username,
+	      	password: credentials.password,
+	      	_token: token
+      	};
+      	
+      	return $http.post(this.loginUrl, parameters);
+      },
+      logout: function() {
+	      return $http.get(this.logoutUrl);
+      },
+      csrf: function() {
+	      return $http.get(this.csrfUrl);
       }
     };
   });

@@ -7,6 +7,7 @@ describe('Service: AuthenticationService', function () {
 
   // instantiate service
   var AuthenticationService, ApiService, SessionService, scope;
+  var csrfToken = 'ferferf';
   
   var user = {id: 1, username: 'test', email:'test@test.com'};
   var credentials = {username: 'test', password: ''};
@@ -16,7 +17,8 @@ describe('Service: AuthenticationService', function () {
   beforeEach(module(function($provide) {
 		$provide.factory('ApiService', function() {
 			return {
-			    auth: function(credentials) { }
+			    login: function(credentials) { },
+			    logout: function() {}
 			}
 		});
   }));
@@ -30,22 +32,71 @@ describe('Service: AuthenticationService', function () {
   beforeEach(inject(function (_AuthenticationService_, _SessionService_, $q) {
     AuthenticationService = _AuthenticationService_;
     SessionService = _SessionService_;
-    //angularQ = $q;
     
     deferred = $q.defer();
     
 	//set up the auth service to return a promise    
-    promise = deferred.promise; //.then(function(value) { resolvedValue = value; } );
+    promise = deferred.promise; 
     promise.success = function() {};
     promise.error = function() {};	
         
   }));
+  
+  describe('when using the logout function', function() {
+  
+  	  var result;
+  
+  	  beforeEach(function() {
+	  	  promise.success = function(result) {
+	  		return result({data: user});
+		  };
+		  spyOn(ApiService,'logout').andReturn(promise);
+  	  });
+  
+	  it('should be defined', function() {
+		 expect(AuthenticationService.logout).toBeDefined(); 
+	  });
+	  
+	  describe('and a user is logged in', function() {
+	  
+	  	 beforeEach(function() {
+		 	SessionService.set("test",1);
+		 	SessionService.user.set(user);
+		 	
+		 	result = AuthenticationService.logout();
+	  	 });
+	  	 
+	  	 afterEach(function() {
+		  	SessionService.clear();
+	  	 })
+	  	 
+	  	 it('should call the logout function on the api', function() {
+		  	 expect(ApiService.logout).toHaveBeenCalled();
+	  	 });
+	  
+		 it('should clear the all session information', function() {
+		 	expect(SessionService.user.get()).toBeNull();
+		 });
+		 
+		 it('should return a promise', function() {
+			expect(result.then).toBeDefined();	 
+		 });
+		 
+		 it('should maintain other session storage information', function() {
+			expect(sessionStorage.length).toEqual(1); 
+		 });
+		 
+	  });
+	  
+	  
+  });
 
   describe('when using the login function', function() {
 	
 	  it('should be defined', function() {
 		  expect(AuthenticationService.login).toBeDefined();
 	  });
+	  
 	  
 	  describe('with valid credentials', function() {
 	  	var result = '';
@@ -56,9 +107,9 @@ describe('Service: AuthenticationService', function () {
 		  promise.success = function(result) {
 	  		return result({data: user});
 		  };
-		  spyOn(ApiService,'auth').andReturn(promise);
+		  spyOn(ApiService,'login').andReturn(promise);
 		  
-		  result = AuthenticationService.login(credentials);
+		  result = AuthenticationService.login(credentials, csrfToken);
 		  scope.$apply;
 			
 		});
@@ -67,8 +118,8 @@ describe('Service: AuthenticationService', function () {
 			SessionService.user.clear();
 		});
 		
-		it('should call ApiService auth', function() {
-	  		expect(ApiService.auth).toHaveBeenCalledWith(credentials);
+		it('should call ApiService login with correct parameters', function() {
+	  		expect(ApiService.login).toHaveBeenCalledWith(credentials, csrfToken);
 		});
 		 
 		it('should return a promise', function() {
@@ -91,9 +142,9 @@ describe('Service: AuthenticationService', function () {
 		 	promise.error = function(result) {
 	  			return result({data: user});
 	  		};
-	  		spyOn(ApiService,'auth').andReturn(promise);
+	  		spyOn(ApiService,'login').andReturn(promise);
 		  
-	  		result = AuthenticationService.login(credentials);
+	  		result = AuthenticationService.login(credentials, csrfToken);
 	  		scope.$apply;
 			
 		});
@@ -102,21 +153,18 @@ describe('Service: AuthenticationService', function () {
 			SessionService.user.clear();
 		});
 		
-		it('should call ApiService auth', function() {
-	  		expect(ApiService.auth).toHaveBeenCalledWith(credentials);
+		it('should call ApiService login with correct parameters', function() {
+	  		expect(ApiService.login).toHaveBeenCalledWith(credentials, csrfToken);
 		});
 		
 		it('should return a promise', function() {
 			expect(result.then).toBeDefined();	
 		});
 		
-		it('should clear the user', function() {
+		it('should clear the user out of the session', function() {
 			expect(SessionService.user.get()).toBeNull();
 		});
 	  });
-	  
-	  
-	  
 	  
 	  
   })

@@ -12,10 +12,12 @@ class cciLoginService implements LoginServiceInterface {
 	}
 
 	public function login() {
-
+		
 		if ( isset($this->input['username']) && isset($this->input['password'])) {
-			if ( Auth::attempt($this->input) ) return true;
+		
+			$cred = array('username'=>$this->input['username'], 'password'=>$this->input['password']);
 			
+			return Auth::attempt($cred, true);
 		} 
 		return false;
 	}

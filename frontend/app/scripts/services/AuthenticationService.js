@@ -9,8 +9,8 @@ angular.module('frontendApp')
 
     // Public API here
     return {
-      login: function(credentials) {
-	      var p = api.auth(credentials);
+      login: function(credentials, token) {
+	      var p = api.login(credentials, token);
 	      
 	      p.success(function(result) {
 		     sess.user.set(result.data);
@@ -18,6 +18,13 @@ angular.module('frontendApp')
 		 p.error(function(error) {
 			sess.user.clear();	
 		 });
+	      
+	      return p;
+      },
+      logout: function() {
+      	  var p = api.logout();
+      	  
+	      sess.user.clear();
 	      
 	      return p;
       }

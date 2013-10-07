@@ -5,41 +5,48 @@ describe('Controller: LoginCtrl', function () {
   // load the controller's module
   beforeEach(angular.mock.module('frontendApp'));
 
-  var LoginCtrl, scope, location, apiService, authresult;
-  
+  var LoginCtrl, scope, location, authService, authresult, csrf;
+  var token = 'freferfer';
   
   beforeEach(module(function($provide) {
-		$provide.factory('apiService', function() {
+
+		$provide.factory('AuthenticationService', function() {
 			return {
-			    auth: function(credentials) { }
+				login: function() {}
 			}
 		});
+		
 	}));
+	
+  csrf = { data: JSON.stringify(token) };
    
-  beforeEach(inject(function (_ApiService_) {
-    apiService = _ApiService_;
-    
-  }));
-
-  // Initialize the controller and a mock scope
-  beforeEach(inject(function ($controller, $rootScope, $location, ApiService) {
+  beforeEach(inject(function (_AuthenticationService_, $controller, $rootScope, $location) {
+    authService = _AuthenticationService_;
     scope = $rootScope.$new();
     location = $location;
+    
     LoginCtrl = $controller('LoginCtrl', {
       $scope: scope,
       $location: location,
-      apiService: ApiService
+      AuthenticationService: authService,
+      Csrf: csrf
     });
+    
+    
   }));
   
-
+ 
   it('should attach some credentials', function () {
   	var expectedCredentials = { username: "", password: "" };
     expect(scope.credentials).toEqual(expectedCredentials);
   });
   
+  it('should have the csrf token', function() {
+	 expect(scope.csrf).toEqual(token); 
+  });
+  
   it('should have the apiService available', function () {
-    expect(apiService).toBeDefined();
+    expect(authService).toBeDefined();
   });
  
  
@@ -48,18 +55,18 @@ describe('Controller: LoginCtrl', function () {
 	  var authSpy;
 	  
 	  beforeEach(function() {
-		authSpy  = spyOn(apiService,'auth');
+		authSpy  = spyOn(authService,'login');
 	  })
 
 	  describe('Valid authorizations', function() {
 			
 			beforeEach(function() {
 				authSpy.andCallFake(function() { return true; });
-				scope.login(scope.credentials);
+				scope.login(scope.credentials, token);
 			});
 			
 			it('should call the apiService auth function', function() {
-			  	 expect(apiService.auth).toHaveBeenCalledWith(scope.credentials); 
+			  	 expect(authService.login).toHaveBeenCalledWith(scope.credentials, token); 
 		  	  });
 		 	
 			it('should redirect user to /clients if auth returns true', function() {
@@ -71,11 +78,11 @@ describe('Controller: LoginCtrl', function () {
 		 
 		 	beforeEach(function() {
 				authSpy.andCallFake(function() { return false; });
-				scope.login(scope.credentials);
+				scope.login(scope.credentials, token);
 			});
 			
 			it('should call the apiService auth function', function() {
-		  		expect(apiService.auth).toHaveBeenCalledWith(scope.credentials); 
+		  		expect(authService.login).toHaveBeenCalledWith(scope.credentials, token); 
 	  	    });
 			
 			it('should redirect user to /login if auth returns false', function() {
