@@ -1,18 +1,22 @@
 'use strict';
 
 angular.module('frontendApp')
-  .controller('LoginCtrl', function ($scope, $location, AuthenticationService, Csrf) {
+  .controller('LoginCtrl', function ($scope, $location, AuthenticationService) {
     $scope.credentials = { username: "", password: ""};
-	$scope.csrf = JSON.parse(Csrf.data);
+	//$scope.csrf = JSON.parse(Csrf.data);
 	
-	$scope.login = function(credentials, token) {
-		var auth = AuthenticationService.login(credentials, token);
-		if ( auth ) {
-			$location.path('/clients');			
-		}
-		else {
-			$location.path('/login');
-		}
+	$scope.login = function(credentials) {
+	
+		alert(credentials);
+		var auth = AuthenticationService.login(credentials);
 
+		auth.success(function(result) {
+			alert('success');
+			//$location.path('/clients');
+		});
+		auth.error(function(result) {
+			alert('error');
+			//$location.path('/login');			
+		});
 	}
 });

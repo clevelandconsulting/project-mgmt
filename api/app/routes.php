@@ -23,7 +23,7 @@ Route::group(array('prefix'=>'api/v1'), function() {
 
 	
 	Route::get('csrf', function() {
-		return Response::json(Session::token(),200);
+		return Response::json(array('csrf_token'=>csrf_token()),200);
 	});
 	
 	Route::get('logout', 'api\v1\UsersController@logout');

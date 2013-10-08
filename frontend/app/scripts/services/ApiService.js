@@ -4,7 +4,7 @@ angular.module('frontendApp')
   .factory('ApiService', function ($http) {
     // Service logic
     // ...
-	var apiUrl = 'http://cci-project-mgmt.dev/api';
+	var apiUrl = 'http://project-mgmt.dev/api';
 	
 	var options = {
 		version: 'v1',
@@ -24,7 +24,7 @@ angular.module('frontendApp')
 	      	password: credentials.password,
 	      	_token: token
       	};
-      	
+      	//alert('logging in ' + token);
       	return $http.post(this.loginUrl, parameters);
       },
       logout: function() {

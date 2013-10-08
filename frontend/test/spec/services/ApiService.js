@@ -2,7 +2,7 @@
 
 describe('Service: ApiService', function () {
 
-  var apiLocation = 'http://cci-project-mgmt.dev';
+  var apiLocation = 'http://project-mgmt.dev';
   var csrfToken = 'freferge';
   
   // load the service's module
@@ -61,36 +61,39 @@ describe('Service: ApiService', function () {
   describe('when calling the login function', function() {
 	 
 	 var authUrl = apiLocation + '/api/v1/login';
-	 var result;
-	 var credentials = {
-		 username: 'test',
-		 password: 'test',
-	 };
-	 var parameters = {
-		 	username: credentials.username,
-		 	password: credentials.password,
-		 	_token: csrfToken
-	 	}
-	 
-	 beforeEach(function() {
- 		httpBackend.when("POST",authUrl, parameters).respond({id: 1, username: 'test', email: 'test@test.com'});
- 		result = ApiService.login(credentials,parameters._token);
-	 	httpBackend.flush();
-	 		 	
- 	});
 	 
 	 it('should have a valid path to the api', function() {
 		 expect(ApiService.loginUrl).toEqual(authUrl);
 	 });
 	 
-	 it('should call the api via a http post with correct parameters', function() {
-	 	
-		 httpBackend.expectPOST(authUrl,parameters);
+	 describe('with receiving a user in response', function() {
+		 var result;
+		 var credentials = {
+			 username: 'test',
+			 password: 'test',
+		 };
+		 var parameters = {
+			 	username: credentials.username,
+			 	password: credentials.password,
+			 	_token: csrfToken
+		 	}
+		 
+		 beforeEach(function() {
+	 		httpBackend.when("POST",authUrl, parameters).respond({id: 1, username: 'test', email: 'test@test.com'});
+	 		result = ApiService.login(credentials,parameters._token);
+		 	httpBackend.flush();
+		 		 	
+	 	 }); 
+		 
+		 it('should call the api via a http post with correct parameters', function() {
+			 httpBackend.expectPOST(authUrl,parameters);
+		 });
+	
+		 it('should return a promise', function() {
+			expect(result.then).toBeDefined();
+		 });	  
+		 
 	 });
-
-	 it('should return a promise', function() {
-		expect(result.then).toBeDefined();
-	 });	 	 
 	  
   });
   
