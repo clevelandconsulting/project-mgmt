@@ -5,7 +5,10 @@
 	"license": "MIT",
 	"require": {
 		"laravel/framework": "4.0.*",
-		"sirprize/basecamp": "dev-master"
+		"sirprize/basecamp": "dev-master",
+		"bshaffer/oauth2-server-php": "dev-develop",
+		"bshaffer/oauth2-server-httpfoundation-bridge": "v0.9"
+		
 	},
 	"require-dev": {
 		"way/generators": "dev-master",

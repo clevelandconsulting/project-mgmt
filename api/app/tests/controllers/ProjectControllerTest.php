@@ -2,8 +2,6 @@
 
 require_once('ResourceControllerTestCase.php');
 
-use Project;
-
 class ProjectControllerTest extends ResourceControllerTestCase {
 
 	protected $useDatabase = true;
