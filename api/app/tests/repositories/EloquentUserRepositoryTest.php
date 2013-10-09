@@ -9,7 +9,7 @@ class EloquentUserRepositoryTest extends RepositoryTestCase {
 	public function setUp() {
 		parent::setUp();
 		
-		$this->mockedService = $this->mockedService = $this->mock('Cci\Basecamp\BasecampService');
+		$this->mockedService = $this->mockedService = $this->mock('Cci\Services\Basecamp\BasecampService');
 		
 		$this->setRepoName('Cci\Repositories\EloquentUserRepository');
 		$this->buildRepo();

@@ -4,7 +4,7 @@ namespace Cci\Repositories;
 
 use User;
 use Hash;
-use Cci\Basecamp\BasecampService;
+use Cci\Services\Basecamp\BasecampService;
 
 class EloquentUserRepository implements Interfaces\UserRepositoryInterface {
 

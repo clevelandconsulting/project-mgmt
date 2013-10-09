@@ -5,7 +5,7 @@ require_once('RepositoryTestCase.php');
 use Cci\Repositories\EloquentProjectRepository;
 use Cci\Repositories\EloquentProjectUserRepository;
 use Cci\Repositories\EloquentUserRepository;
-use Cci\Basecamp\BasecampService;
+use Cci\Services\Basecamp\BasecampService;
 
 class EloquentProjectRepositoryTest extends RepositoryTestCase {
 	
@@ -45,7 +45,7 @@ class EloquentProjectRepositoryTest extends RepositoryTestCase {
 		
 		$this->setRepoName('Cci\Repositories\EloquentProjectRepository');
 		
-		$this->mockedService = $this->mock('Cci\Basecamp\BasecampService');
+		$this->mockedService = $this->mock('Cci\Services\Basecamp\BasecampService');
 		$this->mockedCompanyRepo = $this->mock('Cci\Repositories\Interfaces\CompanyRepositoryInterface');
 		
 		$this->projectUserRepo = new EloquentProjectUserRepository();

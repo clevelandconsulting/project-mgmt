@@ -1,17 +1,17 @@
 <?php 
 
-namespace Cci;
+namespace Cci\ServiceProviders;
  
 use Illuminate\Support\ServiceProvider;
  
-class cciServiceProvider extends ServiceProvider {
+class RepositoryServiceProvider extends ServiceProvider {
  
   public function register()
   {
   
     $this->app->bind(
       'Cci\Services\LoginServiceInterface',
-      'Cci\Services\cciLoginService'
+      'Cci\Services\LoginService'
     );
     
     $this->app->bind(

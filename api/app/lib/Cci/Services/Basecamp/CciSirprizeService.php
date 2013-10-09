@@ -1,6 +1,6 @@
 <?php
 
-namespace Cci\Basecamp;
+namespace Cci\Services\Basecamp;
 
 use Sirprize\Basecamp\Service;
 

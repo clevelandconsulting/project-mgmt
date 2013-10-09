@@ -1,4 +1,4 @@
-<?php namespace Cci\Basecamp;
+<?php namespace Cci\ServiceProviders;
 
 use Illuminate\Support\ServiceProvider;
 use sirprize\basecamp\Service;
@@ -32,7 +32,7 @@ class BasecampServiceProvider extends ServiceProvider {
 	public function register()
 	{
 		
-		$this->app->bind('Cci\Basecamp\SirprizeServiceInterface', function() {
+		$this->app->bind('Cci\Services\Basecamp\SirprizeServiceInterface', function() {
 			$baseUri = Config::get('packages/cci/basecamp.basecamp_url');
 			$un = Config::get('packages/cci/basecamp.username');
 			$pw = Config::get('packages/cci/basecamp.password');

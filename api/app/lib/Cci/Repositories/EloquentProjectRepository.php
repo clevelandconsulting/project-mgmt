@@ -3,7 +3,7 @@
 namespace Cci\Repositories;
 
 use Project;
-use Cci\Basecamp\BasecampService;
+use Cci\Services\Basecamp\BasecampService;
 use Cci\Repositories\Interfaces\CompanyRepositoryInterface;
 use Cci\Repositories\Interfaces\UserRepositoryInterface;
 use Cci\Repositories\Interfaces\ProjectUserRepositoryInterface;

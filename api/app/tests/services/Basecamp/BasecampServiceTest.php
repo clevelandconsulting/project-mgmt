@@ -1,6 +1,6 @@
 <?php
 
-use Cci\Basecamp\BasecampService;
+use Cci\Services\Basecamp\BasecampService;
 
 class BasecampServiceTest extends TestCase {
 	
@@ -11,7 +11,7 @@ class BasecampServiceTest extends TestCase {
 		parent::setUp();
 		
 		//mock the sirprize service for this test
-		$this->sirprize = $this->mock('Cci\Basecamp\SirprizeServiceInterface');
+		$this->sirprize = $this->mock('Cci\Services\Basecamp\SirprizeServiceInterface');
 		$this->service = new BasecampService($this->sirprize); //App::make('basecamp');
 	}
 	
