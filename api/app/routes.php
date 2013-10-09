@@ -18,7 +18,7 @@ Route::get('/api', function()
 
 Route::post('/api/oauthToken', function() {
 	
-	$dsn = "mysql:dbname=project_mgmt;host=localhost";
+	$dsn = "mysql:dbname=project_mgmt_testing;host=localhost";
     $username = 'root';
     $password = '';
     
@@ -33,7 +33,7 @@ Route::post('/api/oauthToken', function() {
     
     $server = new OAuth2\Server($storage, array('enforce_state' => true, 'allow_implicit' => true), $grantTypes);
     
-    $server->handleTokenRequest(OAuth2\Request::createFromGlobals())->send();
+    $server->handleTokenRequest(OAuth2\Request::createFromGlobals(), new OAuth2\HttpFoundationBridge\Response())->send();
 	
 });
 

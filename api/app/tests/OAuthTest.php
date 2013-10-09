@@ -26,7 +26,7 @@ class OAuthTest extends TestCase {
 	}
 	
 	public function setup_OAuth2Server() {
-		$dsn = "mysql:dbname:project_mgmt,host=localhost";
+		$dsn = "mysql:dbname=project_mgmt;host=localhost";
         $username = 'root';
         $password = '';
         
@@ -36,6 +36,7 @@ class OAuthTest extends TestCase {
 		$grantTypes = array(
             'authorization_code' => new OAuth2\GrantType\AuthorizationCode($storage),
             'user_credentials'   => new OAuth2\GrantType\UserCredentials($storage),
+            'client_credentials' => new OAuth2\GrantType\ClientCredentials($storage)
         );
         
         $this->server = new OAuth2\Server($storage, array('enforce_state' => true, 'allow_implicit' => true), $grantTypes);
@@ -52,10 +53,10 @@ class OAuthTest extends TestCase {
 	
 		$this->setup_OAuth2Server();
 		
-		$result = $this->server->handleTokenRequest(OAuth2\Request::createFromGlobals())->send();
+		$result = $this->server->handleTokenRequest(OAuth2\Request::createFromGlobals());
 		
-		dd($result);
+		//dd($result);
 		
-		$this->assertInstanceOf("OAuth2\Response",$result->send());
+		$this->assertInstanceOf("OAuth2\Response",$result);
 	}
 }

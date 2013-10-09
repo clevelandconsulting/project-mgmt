@@ -7,7 +7,7 @@
 		"laravel/framework": "4.0.*",
 		"sirprize/basecamp": "dev-master",
 		"bshaffer/oauth2-server-php": "dev-develop",
-		"bshaffer/oauth2-server-httpfoundation-bridge": "v0.9"
+		"bshaffer/oauth2-server-httpfoundation-bridge": "dev-master"
 		
 	},
 	"require-dev": {
