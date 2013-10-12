@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('frontendApp')
-  .factory('AuthenticationService', function (CSRF_TOKEN, ApiService, SessionService) {
+  .factory('AuthenticationService', function (ApiService, SessionService) {
     // Service logic
     // ...
     var api = ApiService;
@@ -16,8 +16,8 @@ angular.module('frontendApp')
       	 //var token, p;
 
       	 //deferred.promise.then(function(token) {
-      	 alert("LOgging in with " + CSRF_TOKEN + ' ' + credentials.username);
-	      var p = api.login(credentials, CSRF_TOKEN);
+      	// alert("LOgging in with " + CSRF_TOKEN + ' ' + credentials.username);
+	      var p = api.login(credentials);
 	      
 	      
 	      

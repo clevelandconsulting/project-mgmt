@@ -18,11 +18,11 @@ angular.module('frontendApp')
       loginUrl: baseUrl + '/login',
       logoutUrl: baseUrl + '/logout',
       csrfUrl: baseUrl + '/csrf',
-      login: function (credentials, token) {
+      projectsUrl: baseUrl + '/projects',
+      login: function (credentials) {
       	var parameters = {
 	      	username: credentials.username,
-	      	password: credentials.password,
-	      	_token: token
+	      	password: credentials.password
       	};
       	//alert('logging in ' + token);
       	return $http.post(this.loginUrl, parameters);
@@ -32,6 +32,18 @@ angular.module('frontendApp')
       },
       csrf: function() {
 	      return $http.get(this.csrfUrl);
+      },
+      projects: function() {
+      	  var url = this.projectsUrl;
+      	  return {
+		      put: function() {
+			      
+		      },
+		      get: function(id) {
+		      	var callUrl = url + (id ? '/'+id : '');
+			  	return $http.get(callUrl);
+		      }
+	      };
       }
     };
   });

@@ -1,4 +1,5 @@
 'use strict';
+/*
 
 (function() {
 
@@ -16,19 +17,14 @@
 
 })();
 
-
+*/ 
 
 angular.module('frontendApp', [])
   .config(function ($routeProvider) {
     $routeProvider
       .when('/login', {
         templateUrl: 'views/login.html',
-        controller: 'LoginCtrl',
-        /*resolve: {
-        	'Csrf': function(ApiService) {
-			 	return ApiService.csrf();
-			 }
-		 }*/
+        controller: 'LoginCtrl'
       })
       .when('/clients', {
         templateUrl: 'views/clients.html',

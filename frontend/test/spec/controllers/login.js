@@ -6,7 +6,7 @@ describe('Controller: LoginCtrl', function () {
   beforeEach(angular.mock.module('frontendApp'));
 
   var LoginCtrl, scope, location, authService, authresult;//, csrf;
-  var token = 'freferfer';
+  //var token = 'freferfer';
   var deferred, promise;
   
   beforeEach(module(function($provide) {
@@ -46,9 +46,10 @@ describe('Controller: LoginCtrl', function () {
     expect(scope.credentials).toEqual(expectedCredentials);
   });
   
-  it('should have the csrf token', function() {
+ /* it('should have the csrf token', function() {
 	 //expect(scope.csrf).toEqual(token); 
   });
+  */
   
   it('should have the apiService available', function () {
     expect(authService).toBeDefined();

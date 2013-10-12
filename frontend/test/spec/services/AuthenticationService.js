@@ -7,19 +7,16 @@ describe('Service: AuthenticationService', function () {
 
   // instantiate service
   var AuthenticationService, ApiService, SessionService, scope;
-  var csrfToken = 'ferferf';
   
   var user = {id: 1, username: 'test', email:'test@test.com'};
   var credentials = {username: 'test', password: ''};
-  var csrfPromise, promise;
-  var csrfDeferred, deferred;
+  var promise, deferred;
   
   beforeEach(module(function($provide) {
 		$provide.factory('ApiService', function() {
 			return {
 			    login: function(credentials) { },
-			    logout: function() {},
-			    csrf: function() {}
+			    logout: function() {}
 			}
 		});
   }));
@@ -35,16 +32,11 @@ describe('Service: AuthenticationService', function () {
     SessionService = _SessionService_;
     
     deferred = $q.defer();
-    csrfDeferred = $q.defer();
     
 	//set up the auth service to return a promise    
     promise = deferred.promise; 
     promise.success = function() {};
-    promise.error = function() {};	
-    
-    csrfPromise = csrfDeferred.promise; 
-    csrfPromise.success = function(result) { return result( { data: JSON.stringify(csrfToken)} ); };
-    csrfPromise.error = function() {};	
+    promise.error = function() {};
         
   }));
   
@@ -113,7 +105,6 @@ describe('Service: AuthenticationService', function () {
 		  promise.success = function(result) {
 	  		return result({data: user});
 		  };
-		  spyOn(ApiService,'csrf').andReturn(csrfPromise);
 		  spyOn(ApiService,'login').andReturn(promise);
 		  
 		  
@@ -127,7 +118,7 @@ describe('Service: AuthenticationService', function () {
 		});
 		
 		it('should call ApiService login with correct parameters', function() {
-	  		expect(ApiService.login).toHaveBeenCalledWith(credentials, csrfToken);
+	  		expect(ApiService.login).toHaveBeenCalledWith(credentials);
 		});
 		 
 		it('should return a promise', function() {
@@ -151,7 +142,6 @@ describe('Service: AuthenticationService', function () {
 	  			return result({data: user});
 	  		};
 	  		spyOn(ApiService,'login').andReturn(promise);
-	  		spyOn(ApiService,'csrf').andReturn(csrfPromise);
 		  
 	  		result = AuthenticationService.login(credentials);
 	  		scope.$apply;
@@ -163,7 +153,7 @@ describe('Service: AuthenticationService', function () {
 		});
 		
 		it('should call ApiService login with correct parameters', function() {
-	  		expect(ApiService.login).toHaveBeenCalledWith(credentials, csrfToken);
+	  		expect(ApiService.login).toHaveBeenCalledWith(credentials);
 		});
 		
 		it('should return a promise', function() {

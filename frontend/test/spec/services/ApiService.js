@@ -16,7 +16,14 @@ describe('Service: ApiService', function () {
   	
     ApiService = _ApiService_;
   }));
-
+  
+  /**************************************************************
+  *
+  *  API FUNCTION DEFINITIONS
+  *
+  **************************************************************/
+ 
+  
   it('should have a login function defined', function () {
     expect(ApiService.login).toBeDefined();
   });
@@ -29,9 +36,95 @@ describe('Service: ApiService', function () {
 	 expect(ApiService.csrf).toBeDefined(); 
   });
   
+  it('should have a projects function defined', function() {
+	  expect(ApiService.projects).toBeDefined();
+  });
+  
   it('should have a base url to the api', function() {
 	 expect(ApiService.baseUrl).toBeDefined(); 
   });
+  
+  /**************************************************************
+  *
+  *  Projects function description
+  *
+  **************************************************************/
+  
+  describe('when calling the projects', function() {
+  	var apiUrl = apiLocation + '/api/v1/projects';
+  	var result;
+  	
+  	beforeEach(function() {
+  
+  	});
+  
+  	afterEach(function() {
+  
+  	});
+  	
+  	it('should have a valid path to the api', function() { 
+  		expect(ApiService.projectsUrl).toEqual(apiUrl);
+  	});
+  	
+  	it('should have a put method', function() { 
+  		expect(ApiService.projects().put).toBeDefined();
+  	});
+  	
+  	it('should have a getter method', function() { 
+  		expect(ApiService.projects().get).toBeDefined();
+  	});
+  	
+  	describe('get method with no parameters', function() {
+  		
+  		beforeEach(function() {
+	  		httpBackend.when("GET",apiUrl).respond({});
+	 		result = ApiService.projects().get();
+		 	httpBackend.flush();
+  		});
+  	
+  		afterEach(function() {
+  	
+  		});
+  		
+  		it('should call the http get', function() { 
+  			httpBackend.expectGET(apiUrl);
+  		});
+  		
+  		it('should return a promise', function() { 
+  			expect(result.then).toBeDefined();
+  		});
+  	
+  	});
+  	
+  	describe('get method with an id', function() {
+  		var id = 1;
+	  	beforeEach(function() {
+	  		httpBackend.when("GET",apiUrl+'/'+id).respond({});
+	 		result = ApiService.projects().get(id);
+		 	httpBackend.flush();
+  		});
+  		
+  		it('should call the http get', function() { 
+  			httpBackend.expectGET(apiUrl+'/'+id);
+  		});
+  		
+  		it('should return a promise', function() { 
+  			expect(result.then).toBeDefined();
+  		});
+  		
+  	});
+  	
+  	
+  	
+  	
+  });
+  
+  
+    /**************************************************************
+    *
+    *  CSRF FUNCTION DESCRIPTION
+    *
+    **************************************************************/
   
   describe('when calling the csrf function', function() {
 	 var csrfUrl = apiLocation + '/api/v1/csrf';
@@ -58,6 +151,12 @@ describe('Service: ApiService', function () {
 	 }); 
   });
   
+  /**************************************************************
+  *
+  *  Login function description
+  *
+  **************************************************************/
+  
   describe('when calling the login function', function() {
 	 
 	 var authUrl = apiLocation + '/api/v1/login';
@@ -74,9 +173,8 @@ describe('Service: ApiService', function () {
 		 };
 		 var parameters = {
 			 	username: credentials.username,
-			 	password: credentials.password,
-			 	_token: csrfToken
-		 	}
+			 	password: credentials.password
+		 }
 		 
 		 beforeEach(function() {
 	 		httpBackend.when("POST",authUrl, parameters).respond({id: 1, username: 'test', email: 'test@test.com'});
@@ -96,6 +194,12 @@ describe('Service: ApiService', function () {
 	 });
 	  
   });
+
+  /**************************************************************
+  *
+  *  Logout function description
+  *
+  **************************************************************/
   
   describe('when calling the logout function', function() {
 	  var authUrl = apiLocation + '/api/v1/logout';

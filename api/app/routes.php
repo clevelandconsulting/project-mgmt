@@ -16,29 +16,16 @@ Route::get('/api', function()
 	return View::make('hello');
 });
 
-Route::post('/api/oauthToken', function() {
-	
-	/*$dsn = "mysql:dbname=project_mgmt_testing;host=localhost";
-    $username = 'root';
-    $password = '';
-    
-    $storage = new OAuth2\Storage\Pdo(array('dsn' => $dsn, 'username' => $username, 'password' => $password));
-	//$storage = '';
+/*
 
-	$grantTypes = array(
-        'authorization_code' => new OAuth2\GrantType\AuthorizationCode($storage),
-        'user_credentials'   => new OAuth2\GrantType\UserCredentials($storage),
-        'client_credentials' => new OAuth2\GrantType\ClientCredentials($storage)
-    );
-    
-    $server = new OAuth2\Server($storage, array('enforce_state' => true, 'allow_implicit' => true), $grantTypes);*/
+Route::post('/api/oauthToken', function() {
     
     $server = App::make('OAuth2Service')->getServer();
     
     $server->handleTokenRequest(OAuth2\Request::createFromGlobals(), new OAuth2\HttpFoundationBridge\Response())->send();
 	
 });
-
+*/
 
 //Route::disableFilters(true);
 
