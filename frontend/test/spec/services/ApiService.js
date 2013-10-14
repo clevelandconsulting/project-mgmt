@@ -53,6 +53,7 @@ describe('Service: ApiService', function () {
   describe('when calling the projects', function() {
   	var apiUrl = apiLocation + '/api/v1/projects';
   	var result;
+  	var id = 1;
   	
   	beforeEach(function() {
   
@@ -72,6 +73,72 @@ describe('Service: ApiService', function () {
   	
   	it('should have a getter method', function() { 
   		expect(ApiService.projects().get).toBeDefined();
+  	});
+  	
+  	describe('put method with success', function() {
+  		
+  		var put = {name: 'fake'};
+  		var response = 'foo';
+  		var success = null;
+  		
+  		beforeEach(function() {
+	  		httpBackend.when("PUT",apiUrl+'/'+id).respond(201,response);
+	  		result = ApiService.projects().put(id,put);
+	  		result.success(function(_res) {
+		  		success = _res;
+	  		});
+	  		httpBackend.flush();
+  		});
+  	
+  		afterEach(function() {
+  	
+  		});
+  		
+  		it('should call the http put', function() { 
+  			httpBackend.expectPUT(apiUrl+'/'+id);
+  		});
+  		
+  		it('should return a promise', function() { 
+  			expect(result.then).toBeDefined();
+  		});
+  		
+  		it('success function should return response', function() {
+	  		expect(success).toEqual(response);
+  		});
+  	
+  	});
+  	
+  	describe('put method with no id and data', function() {
+  		
+  		var put = {name: 'fake'};
+  		var response = 'foo';
+  		var error = null;
+  		
+  		beforeEach(function() {
+	  		httpBackend.when("PUT",apiUrl).respond(500,response);
+	  		result = ApiService.projects().put(null,put);
+	  		result.error(function(_res) {
+		  		error = _res;
+	  		});
+	  		httpBackend.flush();
+  		});
+  	
+  		afterEach(function() {
+  	
+  		});
+  		
+  		it('should call the http put', function() { 
+  			httpBackend.expectPUT(apiUrl);
+  		});
+  		
+  		it('should return a promise', function() { 
+  			expect(result.then).toBeDefined();
+  		});
+  		
+  		it('error function should return response', function() {
+	  		expect(error).toEqual(response);
+  		});
+  	
   	});
   	
   	describe('get method with no parameters', function() {
@@ -97,7 +164,6 @@ describe('Service: ApiService', function () {
   	});
   	
   	describe('get method with an id', function() {
-  		var id = 1;
 	  	beforeEach(function() {
 	  		httpBackend.when("GET",apiUrl+'/'+id).respond({});
 	 		result = ApiService.projects().get(id);
@@ -113,9 +179,6 @@ describe('Service: ApiService', function () {
   		});
   		
   	});
-  	
-  	
-  	
   	
   });
   

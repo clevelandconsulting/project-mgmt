@@ -36,8 +36,9 @@ angular.module('frontendApp')
       projects: function() {
       	  var url = this.projectsUrl;
       	  return {
-		      put: function() {
-			      
+		      put: function(id) {
+		      	var callUrl = url + (id ? '/'+id : '');
+			     return $http.put(callUrl); 
 		      },
 		      get: function(id) {
 		      	var callUrl = url + (id ? '/'+id : '');
