@@ -46,6 +46,148 @@ describe('Service: ApiService', function () {
   
   /**************************************************************
   *
+  *  Clients function description
+  *
+  **************************************************************/
+  
+  describe('when calling the clients', function() {
+  	var apiUrl = apiLocation + '/api/v1/companies';
+  	var result;
+  	var id = 1;
+  	
+  	beforeEach(function() {
+  
+  	});
+  
+  	afterEach(function() {
+  
+  	});
+  	
+  	it('should have a valid path to the api', function() { 
+  		expect(ApiService.clientsUrl).toEqual(apiUrl);
+  	});
+  	
+  	it('should have a put method', function() { 
+  		expect(ApiService.clients().put).toBeDefined();
+  	});
+  	
+  	it('should have a getter method', function() { 
+  		expect(ApiService.clients().get).toBeDefined();
+  	});
+  	
+  	describe('put method with success', function() {
+  		
+  		var data = {name: 'fake'};
+  		var response = 'foo';
+  		var success = null;
+  		
+  		beforeEach(function() {
+	  		httpBackend.when("PUT",apiUrl+'/'+id, data).respond(201,response);
+	  		result = ApiService.clients().put(id,data);
+	  		result.success(function(_res) {
+		  		success = _res;
+	  		});
+	  		httpBackend.flush();
+  		});
+  	
+  		afterEach(function() {
+	  		httpBackend.resetExpectations();
+  		});
+  		
+  		it('should call the http put', function() { 
+  			httpBackend.expectPUT(apiUrl+'/'+id,data);
+  		});
+  		
+  		it('should return a promise', function() { 
+  			expect(result.then).toBeDefined();
+  		});
+  		
+  		it('success function should return response', function() {
+	  		expect(success).toEqual(response);
+  		});
+  	
+  	});
+  	
+  	describe('put method with no id and data', function() {
+  		
+  		var data = {name: 'fake'};
+  		var response = 'foo';
+  		var error = null;
+  		
+  		beforeEach(function() {
+	  		httpBackend.when("PUT",apiUrl,data).respond(500,response);
+	  		result = ApiService.clients().put(null,data);
+	  		result.error(function(_res) {
+		  		error = _res;
+	  		});
+	  		httpBackend.flush();
+  		});
+  	
+  		afterEach(function() {
+	  		httpBackend.resetExpectations();
+  		});
+  		
+  		it('should call the http put', function() { 
+  			httpBackend.expectPUT(apiUrl,data);
+  		});
+  		
+  		it('should return a promise', function() { 
+  			expect(result.then).toBeDefined();
+  		});
+  		
+  		it('error function should return response', function() {
+	  		expect(error).toEqual(response);
+  		});
+  	
+  	});
+  	
+  	describe('get method with no parameters', function() {
+  		
+  		beforeEach(function() {
+	  		httpBackend.when("GET",apiUrl).respond({});
+	 		result = ApiService.clients().get();
+		 	httpBackend.flush();
+  		});
+  	
+  		afterEach(function() {
+	  		httpBackend.resetExpectations();
+  		});
+  		
+  		it('should call the http get', function() { 
+  			httpBackend.expectGET(apiUrl);
+  		});
+  		
+  		it('should return a promise', function() { 
+  			expect(result.then).toBeDefined();
+  		});
+  	
+  	});
+  	
+  	describe('get method with an id', function() {
+	  	beforeEach(function() {
+	  		httpBackend.when("GET",apiUrl+'/'+id).respond({});
+	 		result = ApiService.clients().get(id);
+		 	httpBackend.flush();
+  		});
+  		
+  		afterEach(function() {
+	  		httpBackend.resetExpectations();
+  		});
+  		
+  		it('should call the http get', function() { 
+  			httpBackend.expectGET(apiUrl+'/'+id);
+  		});
+  		
+  		it('should return a promise', function() { 
+  			expect(result.then).toBeDefined();
+  		});
+  		
+  	});
+  	
+  });
+  
+  /**************************************************************
+  *
   *  Projects function description
   *
   **************************************************************/
@@ -77,13 +219,13 @@ describe('Service: ApiService', function () {
   	
   	describe('put method with success', function() {
   		
-  		var put = {name: 'fake'};
+  		var data = {data: 'haha'};
   		var response = 'foo';
   		var success = null;
   		
   		beforeEach(function() {
-	  		httpBackend.when("PUT",apiUrl+'/'+id).respond(201,response);
-	  		result = ApiService.projects().put(id,put);
+	  		httpBackend.when("PUT",apiUrl+'/'+id, data).respond(201,response);
+	  		result = ApiService.projects().put(id,data);
 	  		result.success(function(_res) {
 		  		success = _res;
 	  		});
@@ -91,11 +233,11 @@ describe('Service: ApiService', function () {
   		});
   	
   		afterEach(function() {
-  	
+	  		httpBackend.resetExpectations();
   		});
   		
   		it('should call the http put', function() { 
-  			httpBackend.expectPUT(apiUrl+'/'+id);
+  			httpBackend.expectPUT(apiUrl+'/'+id, data);
   		});
   		
   		it('should return a promise', function() { 
@@ -110,13 +252,13 @@ describe('Service: ApiService', function () {
   	
   	describe('put method with no id and data', function() {
   		
-  		var put = {name: 'fake'};
+  		var data = {name: 'fake'};
   		var response = 'foo';
   		var error = null;
   		
   		beforeEach(function() {
-	  		httpBackend.when("PUT",apiUrl).respond(500,response);
-	  		result = ApiService.projects().put(null,put);
+	  		httpBackend.when("PUT",apiUrl,data).respond(500,response);
+	  		result = ApiService.projects().put(null,data);
 	  		result.error(function(_res) {
 		  		error = _res;
 	  		});
@@ -124,11 +266,11 @@ describe('Service: ApiService', function () {
   		});
   	
   		afterEach(function() {
-  	
+	  		httpBackend.resetExpectations();
   		});
   		
   		it('should call the http put', function() { 
-  			httpBackend.expectPUT(apiUrl);
+  			httpBackend.expectPUT(apiUrl,data);
   		});
   		
   		it('should return a promise', function() { 
@@ -150,7 +292,7 @@ describe('Service: ApiService', function () {
   		});
   	
   		afterEach(function() {
-  	
+	  		httpBackend.resetExpectations();
   		});
   		
   		it('should call the http get', function() { 
@@ -168,6 +310,10 @@ describe('Service: ApiService', function () {
 	  		httpBackend.when("GET",apiUrl+'/'+id).respond({});
 	 		result = ApiService.projects().get(id);
 		 	httpBackend.flush();
+  		});
+  		
+  		afterEach(function() {
+	  		httpBackend.resetExpectations();
   		});
   		
   		it('should call the http get', function() { 
@@ -199,7 +345,11 @@ describe('Service: ApiService', function () {
  		result = ApiService.csrf();
 	 	httpBackend.flush();
 	 		 	
- 	});
+ 	 });
+ 	
+ 	 afterEach(function() {
+	 	httpBackend.resetExpectations();
+  	 });
 	 
 	 it('should have a valid path to the api', function() {
 		 expect(ApiService.csrfUrl).toEqual(csrfUrl);
@@ -246,6 +396,10 @@ describe('Service: ApiService', function () {
 		 		 	
 	 	 }); 
 		 
+		 afterEach(function() {
+	  		httpBackend.resetExpectations();
+  		 });
+		 
 		 it('should call the api via a http post with correct parameters', function() {
 			 httpBackend.expectPOST(authUrl,parameters);
 		 });
@@ -273,7 +427,11 @@ describe('Service: ApiService', function () {
  		result = ApiService.logout({});
 	 	httpBackend.flush();
 	 		 	
- 	});
+ 	 });
+ 	 
+ 	 afterEach(function() {
+ 	  	httpBackend.resetExpectations();
+  	 });
 	 
 	 it('should have a valid path to the api', function() {
 		 expect(ApiService.logoutUrl).toEqual(authUrl);

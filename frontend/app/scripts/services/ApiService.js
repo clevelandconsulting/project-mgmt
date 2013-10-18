@@ -19,6 +19,7 @@ angular.module('frontendApp')
       logoutUrl: baseUrl + '/logout',
       csrfUrl: baseUrl + '/csrf',
       projectsUrl: baseUrl + '/projects',
+      clientsUrl: baseUrl + '/companies',
       login: function (credentials) {
       	var parameters = {
 	      	username: credentials.username,
@@ -36,15 +37,29 @@ angular.module('frontendApp')
       projects: function() {
       	  var url = this.projectsUrl;
       	  return {
-		      put: function(id) {
+		      put: function(id,data) {
 		      	var callUrl = url + (id ? '/'+id : '');
-			     return $http.put(callUrl); 
+			     return $http.put(callUrl,data); 
 		      },
 		      get: function(id) {
 		      	var callUrl = url + (id ? '/'+id : '');
 			  	return $http.get(callUrl);
 		      }
 	      };
+      },
+      clients: function() {
+	      var url = this.clientsUrl;
+	      return {
+		      put: function(id) {
+		      	var data = 'b';
+		      	var callUrl = url + (id ? '/'+id : '');
+			     return $http.put(callUrl, data);
+		      },
+		      get: function(id) {
+			     var callUrl = url + (id ? '/'+id : '');
+			     return $http.get(callUrl);
+		      }
+	      }
       }
     };
   });
