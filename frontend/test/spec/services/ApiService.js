@@ -46,6 +46,567 @@ describe('Service: ApiService', function () {
   
   /**************************************************************
   *
+  *  Time function description
+  *
+  **************************************************************/
+  
+  describe('when calling the times', function() {
+  	var apiUrl = apiLocation + '/api/v1/times';
+  	var result;
+  	var id = 1;
+  	
+  	beforeEach(function() {
+  
+  	});
+  
+  	afterEach(function() {
+  
+  	});
+  	
+  	it('should have a valid path to the api', function() { 
+  		expect(ApiService.timesUrl).toEqual(apiUrl);
+  	});
+  	
+  	it('should have a put method', function() { 
+  		expect(ApiService.times().put).toBeDefined();
+  	});
+  	
+  	it('should have a post method', function() { 
+  		expect(ApiService.times().post).toBeDefined();
+  	});
+  	
+  	it('should have a delete method', function() { 
+  		expect(ApiService.times().delete).toBeDefined();
+  	});
+  	
+  	it('should have a get method', function() { 
+  		expect(ApiService.times().get).toBeDefined();
+  	});
+  	
+  	describe('delete method with success', function() {
+  		
+  		var success = null;
+  		var response = 'foo';
+  		
+  		beforeEach(function() {
+	  		httpBackend.when("DELETE",apiUrl+'/'+id).respond(200,response);
+	  		result = ApiService.times().delete(id);
+	  		result.success(function(_res) {
+		  		success = _res;
+	  		});
+	  		httpBackend.flush();
+  		});
+  	
+  		afterEach(function() {
+	  		httpBackend.resetExpectations();
+  		});
+  		
+  		it('should call the http delete', function() { 
+  			httpBackend.expectDELETE(apiUrl+'/'+id);
+  		});
+  		
+  		it('should return a promise', function() { 
+  			expect(result.then).toBeDefined();
+  		});
+  		
+  		it('success function should return response', function() {
+	  		expect(success).toEqual(response);
+  		});
+  	
+  	});
+  	
+  	describe('delete method with failure', function() {
+  		
+  		var error = null;
+  		var response = 'foo';
+  		
+  		beforeEach(function() {
+	  		httpBackend.when("DELETE",apiUrl+'/'+id).respond(500,response);
+	  		result = ApiService.times().delete(id);
+	  		result.error(function(_res) {
+		  		error = _res;
+	  		});
+	  		httpBackend.flush();
+  		});
+  	
+  		afterEach(function() {
+	  		httpBackend.resetExpectations();
+  		});
+  		
+  		it('should call the http delete', function() { 
+  			httpBackend.expectDELETE(apiUrl+'/'+id);
+  		});
+  		
+  		it('should return a promise', function() { 
+  			expect(result.then).toBeDefined();
+  		});
+  		
+  		it('success function should return response', function() {
+	  		expect(error).toEqual(response);
+  		});
+  	
+  	});
+  	
+  	describe('post method with success', function() {
+  		
+  		var data = {name: 'fake'};
+  		var response = 'foo';
+  		var success = null;
+  		
+  		beforeEach(function() {
+	  		httpBackend.when("POST",apiUrl+'/'+id, data).respond(201,response);
+	  		result = ApiService.times().post(id,data);
+	  		result.success(function(_res) {
+		  		success = _res;
+	  		});
+	  		httpBackend.flush();
+  		});
+  	
+  		afterEach(function() {
+	  		httpBackend.resetExpectations();
+  		});
+  		
+  		it('should call the http post', function() { 
+  			httpBackend.expectPOST(apiUrl+'/'+id,data);
+  		});
+  		
+  		it('should return a promise', function() { 
+  			expect(result.then).toBeDefined();
+  		});
+  		
+  		it('success function should return response', function() {
+	  		expect(success).toEqual(response);
+  		});
+  	
+  	});
+  	
+  	describe('post method with no id and data', function() {
+  		
+  		var data = {name: 'fake'};
+  		var response = 'foo';
+  		var error = null;
+  		
+  		beforeEach(function() {
+	  		httpBackend.when("POST",apiUrl,data).respond(500,response);
+	  		result = ApiService.times().post(null,data);
+	  		result.error(function(_res) {
+		  		error = _res;
+	  		});
+	  		httpBackend.flush();
+  		});
+  	
+  		afterEach(function() {
+	  		httpBackend.resetExpectations();
+  		});
+  		
+  		it('should call the http post', function() { 
+  			httpBackend.expectPOST(apiUrl,data);
+  		});
+  		
+  		it('should return a promise', function() { 
+  			expect(result.then).toBeDefined();
+  		});
+  		
+  		it('error function should return response', function() {
+	  		expect(error).toEqual(response);
+  		});
+  	
+  	});
+  	
+  	describe('put method with success', function() {
+  		
+  		var data = {name: 'fake'};
+  		var response = 'foo';
+  		var success = null;
+  		
+  		beforeEach(function() {
+	  		httpBackend.when("PUT",apiUrl+'/'+id, data).respond(201,response);
+	  		result = ApiService.times().put(id,data);
+	  		result.success(function(_res) {
+		  		success = _res;
+	  		});
+	  		httpBackend.flush();
+  		});
+  	
+  		afterEach(function() {
+	  		httpBackend.resetExpectations();
+  		});
+  		
+  		it('should call the http put', function() { 
+  			httpBackend.expectPUT(apiUrl+'/'+id,data);
+  		});
+  		
+  		it('should return a promise', function() { 
+  			expect(result.then).toBeDefined();
+  		});
+  		
+  		it('success function should return response', function() {
+	  		expect(success).toEqual(response);
+  		});
+  	
+  	});
+  	
+  	describe('put method with no id and data', function() {
+  		
+  		var data = {name: 'fake'};
+  		var response = 'foo';
+  		var error = null;
+  		
+  		beforeEach(function() {
+	  		httpBackend.when("PUT",apiUrl,data).respond(500,response);
+	  		result = ApiService.times().put(null,data);
+	  		result.error(function(_res) {
+		  		error = _res;
+	  		});
+	  		httpBackend.flush();
+  		});
+  	
+  		afterEach(function() {
+	  		httpBackend.resetExpectations();
+  		});
+  		
+  		it('should call the http put', function() { 
+  			httpBackend.expectPUT(apiUrl,data);
+  		});
+  		
+  		it('should return a promise', function() { 
+  			expect(result.then).toBeDefined();
+  		});
+  		
+  		it('error function should return response', function() {
+	  		expect(error).toEqual(response);
+  		});
+  	
+  	});
+  	
+  	describe('get method with no parameters', function() {
+  		
+  		beforeEach(function() {
+	  		httpBackend.when("GET",apiUrl).respond({});
+	 		result = ApiService.times().get();
+		 	httpBackend.flush();
+  		});
+  	
+  		afterEach(function() {
+	  		httpBackend.resetExpectations();
+  		});
+  		
+  		it('should call the http get', function() { 
+  			httpBackend.expectGET(apiUrl);
+  		});
+  		
+  		it('should return a promise', function() { 
+  			expect(result.then).toBeDefined();
+  		});
+  	
+  	});
+  	
+  	describe('get method with an id', function() {
+	  	beforeEach(function() {
+	  		httpBackend.when("GET",apiUrl+'/'+id).respond({});
+	 		result = ApiService.times().get(id);
+		 	httpBackend.flush();
+  		});
+  		
+  		afterEach(function() {
+	  		httpBackend.resetExpectations();
+  		});
+  		
+  		it('should call the http get', function() { 
+  			httpBackend.expectGET(apiUrl+'/'+id);
+  		});
+  		
+  		it('should return a promise', function() { 
+  			expect(result.then).toBeDefined();
+  		});
+  		
+  	});
+  	
+  });
+  
+  /**************************************************************
+  *
+  *  Payments function description
+  *
+  **************************************************************/
+  
+  describe('when calling the payments', function() {
+  	var apiUrl = apiLocation + '/api/v1/payments';
+  	var result;
+  	var id = 1;
+  	
+  	beforeEach(function() {
+  
+  	});
+  
+  	afterEach(function() {
+  
+  	});
+  	
+  	it('should have a valid path to the api', function() { 
+  		expect(ApiService.paymentsUrl).toEqual(apiUrl);
+  	});
+  	
+  	it('should have a put method', function() { 
+  		expect(ApiService.payments().put).toBeDefined();
+  	});
+  	
+  	it('should have a post method', function() { 
+  		expect(ApiService.payments().post).toBeDefined();
+  	});
+  	
+  	it('should have a delete method', function() { 
+  		expect(ApiService.payments().delete).toBeDefined();
+  	});
+  	
+  	it('should have a get method', function() { 
+  		expect(ApiService.payments().get).toBeDefined();
+  	});
+  	
+  	describe('delete method with success', function() {
+  		
+  		var success = null;
+  		var response = 'foo';
+  		
+  		beforeEach(function() {
+	  		httpBackend.when("DELETE",apiUrl+'/'+id).respond(200,response);
+	  		result = ApiService.payments().delete(id);
+	  		result.success(function(_res) {
+		  		success = _res;
+	  		});
+	  		httpBackend.flush();
+  		});
+  	
+  		afterEach(function() {
+	  		httpBackend.resetExpectations();
+  		});
+  		
+  		it('should call the http delete', function() { 
+  			httpBackend.expectDELETE(apiUrl+'/'+id);
+  		});
+  		
+  		it('should return a promise', function() { 
+  			expect(result.then).toBeDefined();
+  		});
+  		
+  		it('success function should return response', function() {
+	  		expect(success).toEqual(response);
+  		});
+  	
+  	});
+  	
+  	describe('delete method with failure', function() {
+  		
+  		var error = null;
+  		var response = 'foo';
+  		
+  		beforeEach(function() {
+	  		httpBackend.when("DELETE",apiUrl+'/'+id).respond(500,response);
+	  		result = ApiService.payments().delete(id);
+	  		result.error(function(_res) {
+		  		error = _res;
+	  		});
+	  		httpBackend.flush();
+  		});
+  	
+  		afterEach(function() {
+	  		httpBackend.resetExpectations();
+  		});
+  		
+  		it('should call the http delete', function() { 
+  			httpBackend.expectDELETE(apiUrl+'/'+id);
+  		});
+  		
+  		it('should return a promise', function() { 
+  			expect(result.then).toBeDefined();
+  		});
+  		
+  		it('success function should return response', function() {
+	  		expect(error).toEqual(response);
+  		});
+  	
+  	});
+  	
+  	describe('post method with success', function() {
+  		
+  		var data = {name: 'fake'};
+  		var response = 'foo';
+  		var success = null;
+  		
+  		beforeEach(function() {
+	  		httpBackend.when("POST",apiUrl+'/'+id, data).respond(201,response);
+	  		result = ApiService.payments().post(id,data);
+	  		result.success(function(_res) {
+		  		success = _res;
+	  		});
+	  		httpBackend.flush();
+  		});
+  	
+  		afterEach(function() {
+	  		httpBackend.resetExpectations();
+  		});
+  		
+  		it('should call the http post', function() { 
+  			httpBackend.expectPOST(apiUrl+'/'+id,data);
+  		});
+  		
+  		it('should return a promise', function() { 
+  			expect(result.then).toBeDefined();
+  		});
+  		
+  		it('success function should return response', function() {
+	  		expect(success).toEqual(response);
+  		});
+  	
+  	});
+  	
+  	describe('post method with no id and data', function() {
+  		
+  		var data = {name: 'fake'};
+  		var response = 'foo';
+  		var error = null;
+  		
+  		beforeEach(function() {
+	  		httpBackend.when("POST",apiUrl,data).respond(500,response);
+	  		result = ApiService.payments().post(null,data);
+	  		result.error(function(_res) {
+		  		error = _res;
+	  		});
+	  		httpBackend.flush();
+  		});
+  	
+  		afterEach(function() {
+	  		httpBackend.resetExpectations();
+  		});
+  		
+  		it('should call the http post', function() { 
+  			httpBackend.expectPOST(apiUrl,data);
+  		});
+  		
+  		it('should return a promise', function() { 
+  			expect(result.then).toBeDefined();
+  		});
+  		
+  		it('error function should return response', function() {
+	  		expect(error).toEqual(response);
+  		});
+  	
+  	});
+  	
+  	describe('put method with success', function() {
+  		
+  		var data = {name: 'fake'};
+  		var response = 'foo';
+  		var success = null;
+  		
+  		beforeEach(function() {
+	  		httpBackend.when("PUT",apiUrl+'/'+id, data).respond(201,response);
+	  		result = ApiService.payments().put(id,data);
+	  		result.success(function(_res) {
+		  		success = _res;
+	  		});
+	  		httpBackend.flush();
+  		});
+  	
+  		afterEach(function() {
+	  		httpBackend.resetExpectations();
+  		});
+  		
+  		it('should call the http put', function() { 
+  			httpBackend.expectPUT(apiUrl+'/'+id,data);
+  		});
+  		
+  		it('should return a promise', function() { 
+  			expect(result.then).toBeDefined();
+  		});
+  		
+  		it('success function should return response', function() {
+	  		expect(success).toEqual(response);
+  		});
+  	
+  	});
+  	
+  	describe('put method with no id and data', function() {
+  		
+  		var data = {name: 'fake'};
+  		var response = 'foo';
+  		var error = null;
+  		
+  		beforeEach(function() {
+	  		httpBackend.when("PUT",apiUrl,data).respond(500,response);
+	  		result = ApiService.payments().put(null,data);
+	  		result.error(function(_res) {
+		  		error = _res;
+	  		});
+	  		httpBackend.flush();
+  		});
+  	
+  		afterEach(function() {
+	  		httpBackend.resetExpectations();
+  		});
+  		
+  		it('should call the http put', function() { 
+  			httpBackend.expectPUT(apiUrl,data);
+  		});
+  		
+  		it('should return a promise', function() { 
+  			expect(result.then).toBeDefined();
+  		});
+  		
+  		it('error function should return response', function() {
+	  		expect(error).toEqual(response);
+  		});
+  	
+  	});
+  	
+  	describe('get method with no parameters', function() {
+  		
+  		beforeEach(function() {
+	  		httpBackend.when("GET",apiUrl).respond({});
+	 		result = ApiService.payments().get();
+		 	httpBackend.flush();
+  		});
+  	
+  		afterEach(function() {
+	  		httpBackend.resetExpectations();
+  		});
+  		
+  		it('should call the http get', function() { 
+  			httpBackend.expectGET(apiUrl);
+  		});
+  		
+  		it('should return a promise', function() { 
+  			expect(result.then).toBeDefined();
+  		});
+  	
+  	});
+  	
+  	describe('get method with an id', function() {
+	  	beforeEach(function() {
+	  		httpBackend.when("GET",apiUrl+'/'+id).respond({});
+	 		result = ApiService.payments().get(id);
+		 	httpBackend.flush();
+  		});
+  		
+  		afterEach(function() {
+	  		httpBackend.resetExpectations();
+  		});
+  		
+  		it('should call the http get', function() { 
+  			httpBackend.expectGET(apiUrl+'/'+id);
+  		});
+  		
+  		it('should return a promise', function() { 
+  			expect(result.then).toBeDefined();
+  		});
+  		
+  	});
+  	
+  });
+
+  
+  /**************************************************************
+  *
   *  Clients function description
   *
   **************************************************************/

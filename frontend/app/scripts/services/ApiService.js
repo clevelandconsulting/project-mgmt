@@ -12,6 +12,49 @@ angular.module('frontendApp')
 	
 	var baseUrl = apiUrl + '/' + options.version;
     
+    var _put = function(url,id,data) {
+	    var callUrl = url + (id ? '/'+id : '');
+		return $http.put(callUrl,data); 
+    };
+    
+    var _get = function(url,id) {
+	    var callUrl = url + (id ? '/'+id : '');
+		return $http.get(callUrl);
+    };
+    
+    var _post = function(url,id,data) {
+	    var callUrl = url + (id ? '/'+id : '');
+		return $http.post(callUrl,data); 
+    };
+    
+    var _delete = function(url,id) {
+	    var callUrl = url + (id ? '/'+id : '');
+		return $http.delete(callUrl);
+    }
+    
+    var baseResource = function(url) {
+	    return {
+      	  	  put: function(id,data) {
+	      	  	  return _put(url,id,data);
+      	  	  },
+      	  	  get: function(id) {
+	      	  	  return _get(url,id);
+      	  	  }
+	      };
+    };
+    
+    var extendedResource = function(url) {
+	    var resource = baseResource(url);
+		return angular.extend(resource, {
+			post: function(id,data) { 
+				 return _post(url,id,data)
+			},
+			delete: function(id) {
+				 return _delete(url,id);
+			}
+		});
+    }
+    
     // Public API here
     return {
       baseUrl: baseUrl,
@@ -20,12 +63,13 @@ angular.module('frontendApp')
       csrfUrl: baseUrl + '/csrf',
       projectsUrl: baseUrl + '/projects',
       clientsUrl: baseUrl + '/companies',
+      paymentsUrl: baseUrl + '/payments',
+      timesUrl: baseUrl + '/times',
       login: function (credentials) {
       	var parameters = {
 	      	username: credentials.username,
 	      	password: credentials.password
       	};
-      	//alert('logging in ' + token);
       	return $http.post(this.loginUrl, parameters);
       },
       logout: function() {
@@ -35,31 +79,16 @@ angular.module('frontendApp')
 	      return $http.get(this.csrfUrl);
       },
       projects: function() {
-      	  var url = this.projectsUrl;
-      	  return {
-		      put: function(id,data) {
-		      	var callUrl = url + (id ? '/'+id : '');
-			     return $http.put(callUrl,data); 
-		      },
-		      get: function(id) {
-		      	var callUrl = url + (id ? '/'+id : '');
-			  	return $http.get(callUrl);
-		      }
-	      };
+      	 return baseResource(this.projectsUrl);
       },
       clients: function() {
-	      var url = this.clientsUrl;
-	      return {
-		      put: function(id) {
-		      	var data = 'b';
-		      	var callUrl = url + (id ? '/'+id : '');
-			     return $http.put(callUrl, data);
-		      },
-		      get: function(id) {
-			     var callUrl = url + (id ? '/'+id : '');
-			     return $http.get(callUrl);
-		      }
-	      }
+      	 return baseResource(this.clientsUrl);
+      },
+      payments: function() {
+      	return extendedResource(this.paymentsUrl);
+      },
+      times: function() {
+	      return extendedResource(this.timesUrl);
       }
     };
   });
