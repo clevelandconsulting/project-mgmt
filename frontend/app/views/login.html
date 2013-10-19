@@ -1,5 +1,8 @@
 <div class='container'>
 	<h1 class='center'>CCI Managment</h1>
+	<div data-ng-show='flash.isset()'>
+		<div class='alert {{ flash.current.class }}'>{{flash.current.message}}</div>
+	</div>
 	<div class="hero-unit">
 		<h2>Login</h2>
 		<form class='form-horizontal' role='form'>

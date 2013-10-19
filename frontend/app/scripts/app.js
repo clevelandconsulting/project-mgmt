@@ -19,7 +19,7 @@
 
 */ 
 
-angular.module('frontendApp', [])
+var fApp = angular.module('frontendApp', [])
   .config(function ($routeProvider) {
     $routeProvider
       .when('/login', {
@@ -34,3 +34,11 @@ angular.module('frontendApp', [])
         redirectTo: '/login'
       });
   });
+  
+  /*
+  
+fApp.config(['$httpProvider', function ($httpProvider) {
+    $httpProvider.defaults.useXDomain = true;
+    delete $httpProvider.defaults.headers.common['X-Requested-With'];
+ }]);
+ */

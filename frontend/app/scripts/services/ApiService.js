@@ -1,35 +1,73 @@
 'use strict';
 
 angular.module('frontendApp')
-  .factory('ApiService', function ($http) {
+  .factory('ApiService', function ($http, FlashService) {
     // Service logic
     // ...
-	var apiUrl = 'http://project-mgmt.dev/api';
+	var apiUrl = 'http://cci-project-mgmt.dev/api';
 	
 	var options = {
 		version: 'v1',
 	};
 	
+	var success = function(p, message) {
+		p.success(function(data) {
+			if ( data.flash != undefined ) {
+				message = data.flash;
+			}
+			
+			FlashService.success(message);
+		});
+		
+		return p;
+	}
+	
+	var error = function(p) {
+		p.error(function(data) {
+			var message = 'There was a problem!'
+			if ( data.flash != undefined ) {
+				message = data.flash;
+			}
+			else if ( data.error != undefined) {
+				message = data.error.message;
+			}
+			
+			FlashService.error(message);
+		});
+		return p;
+	}
+	
 	var baseUrl = apiUrl + '/' + options.version;
     
     var _put = function(url,id,data) {
 	    var callUrl = url + (id ? '/'+id : '');
-		return $http.put(callUrl,data); 
+		var p = $http.put(callUrl,data); 
+		p = success(p,'Successfully updated!');
+		p = error(p);
+		return p;
     };
     
     var _get = function(url,id) {
 	    var callUrl = url + (id ? '/'+id : '');
-		return $http.get(callUrl);
+		var p = $http.get(callUrl);
+		p = error(p);
+		return p;
     };
     
     var _post = function(url,id,data) {
 	    var callUrl = url + (id ? '/'+id : '');
-		return $http.post(callUrl,data); 
+		var p = $http.post(callUrl,data); 
+		p = success(p,'Successfully added!');
+		p = error(p);
+		return p;
     };
     
     var _delete = function(url,id) {
 	    var callUrl = url + (id ? '/'+id : '');
-		return $http.delete(callUrl);
+		var p = $http.delete(callUrl);
+		p = success(p,'Successfully deleted!');
+		p = error(p);
+		return p;
     }
     
     var baseResource = function(url) {
@@ -70,10 +108,14 @@ angular.module('frontendApp')
 	      	username: credentials.username,
 	      	password: credentials.password
       	};
-      	return $http.post(this.loginUrl, parameters);
+      	var p = $http.post(this.loginUrl, parameters);
+      	p = error(p);
+      	return p;
       },
       logout: function() {
-	      return $http.get(this.logoutUrl);
+	      var p = $http.get(this.logoutUrl);
+	      p = success(p,"Successfully logged out!");
+	      return p;
       },
       csrf: function() {
 	      return $http.get(this.csrfUrl);

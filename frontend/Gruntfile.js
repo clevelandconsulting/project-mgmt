@@ -12,9 +12,39 @@ var mountFolder = function (connect, dir) {
 // use this if you want to recursively match all subfolders:
 // 'test/spec/**/*.js'
 
+
+
+/*
+grunt.initConfig({
+  connect: {
+    server: {
+      options: {
+        middleware: function(connect, options) {
+          return [
+            // Serve static files
+            connect.static(options.base),
+            // Make empty directories browsable
+            connect.directory(options.base),
+            // CORS support
+            corsMiddleware
+          ];
+        }
+      }
+    }
+  }
+});
+*/
+
 module.exports = function (grunt) {
   require('load-grunt-tasks')(grunt);
   require('time-grunt')(grunt);
+
+  var corsMiddleware = function(req, res, next) {
+	  res.header('Access-Control-Allow-Origin', '*');
+	  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+	  res.header('Access-Control-Allow-Headers', 'Content-Type');
+	  next();
+  }
 
   // configurable paths
   var yeomanConfig = {
@@ -84,7 +114,13 @@ module.exports = function (grunt) {
             return [
               lrSnippet,
               mountFolder(connect, '.tmp'),
-              mountFolder(connect, yeomanConfig.app)
+              mountFolder(connect, yeomanConfig.app),
+              // CORS support
+              function(req, res, next) {
+	            res.setHeader('Access-Control-Allow-Origin', '*');
+	            res.setHeader('Access-Control-Allow-Methods', '*');
+	            next();
+	          }
             ];
           }
         }
@@ -95,7 +131,9 @@ module.exports = function (grunt) {
           middleware: function (connect) {
             return [
               mountFolder(connect, '.tmp'),
-              mountFolder(connect, 'test')
+              mountFolder(connect, 'test'),
+              // CORS support
+              corsMiddleware
             ];
           }
         }

@@ -2,20 +2,26 @@
 
 describe('Service: ApiService', function () {
 
-  var apiLocation = 'http://project-mgmt.dev';
+  var apiLocation = 'http://cci-project-mgmt.dev';
   var csrfToken = 'freferge';
   
   // load the service's module
   beforeEach(module('frontendApp'));
 
   // instantiate service
-  var ApiService, httpBackend, http;
-  beforeEach(inject(function (_ApiService_, $httpBackend, $http) {
+  var ApiService, httpBackend, http, FlashService;
+  beforeEach(inject(function (_ApiService_, _FlashService_, $httpBackend, $http) {
   	http = $http;
   	httpBackend = $httpBackend;
   	
     ApiService = _ApiService_;
+    FlashService = _FlashService_;
   }));
+  
+  beforeEach(function() {
+	 var s = spyOn(FlashService,'success'); 
+	 var e = spyOn(FlashService,'error');
+  });
   
   /**************************************************************
   *
@@ -56,7 +62,7 @@ describe('Service: ApiService', function () {
   	var id = 1;
   	
   	beforeEach(function() {
-  
+	  	
   	});
   
   	afterEach(function() {
@@ -89,6 +95,7 @@ describe('Service: ApiService', function () {
   		var response = 'foo';
   		
   		beforeEach(function() {
+  		
 	  		httpBackend.when("DELETE",apiUrl+'/'+id).respond(200,response);
 	  		result = ApiService.times().delete(id);
 	  		result.success(function(_res) {
@@ -112,13 +119,18 @@ describe('Service: ApiService', function () {
   		it('success function should return response', function() {
 	  		expect(success).toEqual(response);
   		});
+  		
+  		it('should call the flash service with success', function() {
+	  		expect(FlashService.success).toHaveBeenCalledWith('Successfully deleted!');
+  		});
   	
   	});
   	
   	describe('delete method with failure', function() {
   		
   		var error = null;
-  		var response = 'foo';
+  		var f = 'foo';
+  		var response = { flash: f };
   		
   		beforeEach(function() {
 	  		httpBackend.when("DELETE",apiUrl+'/'+id).respond(500,response);
@@ -143,6 +155,10 @@ describe('Service: ApiService', function () {
   		
   		it('success function should return response', function() {
 	  		expect(error).toEqual(response);
+  		});
+  		
+  		it('should call the flash service with error', function() {
+	  		expect(FlashService.error).toHaveBeenCalledWith(f);
   		});
   	
   	});
@@ -177,13 +193,18 @@ describe('Service: ApiService', function () {
   		it('success function should return response', function() {
 	  		expect(success).toEqual(response);
   		});
+  		
+  		it('should call the flash service with success', function() {
+	  		expect(FlashService.success).toHaveBeenCalledWith('Successfully added!');
+  		});
   	
   	});
   	
   	describe('post method with no id and data', function() {
   		
   		var data = {name: 'fake'};
-  		var response = 'foo';
+  		var f = 'foo';
+  		var response = { flash: f };
   		var error = null;
   		
   		beforeEach(function() {
@@ -209,6 +230,10 @@ describe('Service: ApiService', function () {
   		
   		it('error function should return response', function() {
 	  		expect(error).toEqual(response);
+  		});
+  		
+  		it('should call the flash service with error', function() {
+	  		expect(FlashService.error).toHaveBeenCalledWith(f);
   		});
   	
   	});
@@ -243,13 +268,18 @@ describe('Service: ApiService', function () {
   		it('success function should return response', function() {
 	  		expect(success).toEqual(response);
   		});
+  		
+  		it('should call the flash service with success', function() {
+	  		expect(FlashService.success).toHaveBeenCalledWith('Successfully updated!');
+  		});
   	
   	});
   	
   	describe('put method with no id and data', function() {
   		
   		var data = {name: 'fake'};
-  		var response = 'foo';
+  		var f = 'foo';
+  		var response = { flash: f };
   		var error = null;
   		
   		beforeEach(function() {
@@ -275,6 +305,10 @@ describe('Service: ApiService', function () {
   		
   		it('error function should return response', function() {
 	  		expect(error).toEqual(response);
+  		});
+  		
+  		it('should call the flash service with error', function() {
+	  		expect(FlashService.error).toHaveBeenCalledWith(f);
   		});
   	
   	});
@@ -320,6 +354,43 @@ describe('Service: ApiService', function () {
   			expect(result.then).toBeDefined();
   		});
   		
+  	});
+  	
+  	describe('get method that returns an error', function() {
+  		
+  		var f = 'foo';
+  		var response = { flash: f };
+  		var error = null;
+  		
+  		beforeEach(function() {
+	  		httpBackend.when("GET",apiUrl).respond(500,response);
+	  		result = ApiService.times().get();
+	  		result.error(function(_res) {
+		  		error = _res;
+	  		});
+	  		httpBackend.flush();
+  		});
+  	
+  		afterEach(function() {
+	  		httpBackend.resetExpectations();
+  		});
+  		
+  		it('should call the http get', function() { 
+  			httpBackend.expectGET(apiUrl);
+  		});
+  		
+  		it('should return a promise', function() { 
+  			expect(result.then).toBeDefined();
+  		});
+  		
+  		it('error function should return response', function() {
+	  		expect(error).toEqual(response);
+  		});
+  		
+  		it('should call the flash service with error', function() {
+	  		expect(FlashService.error).toHaveBeenCalledWith(f);
+  		});
+  	
   	});
   	
   });
@@ -392,13 +463,18 @@ describe('Service: ApiService', function () {
   		it('success function should return response', function() {
 	  		expect(success).toEqual(response);
   		});
+  		
+  		it('should call the flash service with success', function() {
+	  		expect(FlashService.success).toHaveBeenCalledWith('Successfully deleted!');
+  		});
   	
   	});
   	
   	describe('delete method with failure', function() {
   		
   		var error = null;
-  		var response = 'foo';
+  		var f = 'foo';
+  		var response = { flash: f };
   		
   		beforeEach(function() {
 	  		httpBackend.when("DELETE",apiUrl+'/'+id).respond(500,response);
@@ -423,6 +499,10 @@ describe('Service: ApiService', function () {
   		
   		it('success function should return response', function() {
 	  		expect(error).toEqual(response);
+  		});
+  		
+  		it('should call the flash service with error', function() {
+	  		expect(FlashService.error).toHaveBeenCalledWith(f);
   		});
   	
   	});
@@ -457,13 +537,18 @@ describe('Service: ApiService', function () {
   		it('success function should return response', function() {
 	  		expect(success).toEqual(response);
   		});
+  		
+  		it('should call the flash service with success', function() {
+	  		expect(FlashService.success).toHaveBeenCalledWith('Successfully added!');
+  		});
   	
   	});
   	
   	describe('post method with no id and data', function() {
   		
   		var data = {name: 'fake'};
-  		var response = 'foo';
+  		var f = 'foo';
+  		var response = { flash: f };
   		var error = null;
   		
   		beforeEach(function() {
@@ -489,6 +574,10 @@ describe('Service: ApiService', function () {
   		
   		it('error function should return response', function() {
 	  		expect(error).toEqual(response);
+  		});
+  		
+  		it('should call the flash service with error', function() {
+	  		expect(FlashService.error).toHaveBeenCalledWith(f);
   		});
   	
   	});
@@ -523,13 +612,18 @@ describe('Service: ApiService', function () {
   		it('success function should return response', function() {
 	  		expect(success).toEqual(response);
   		});
+  		
+  		it('should call the flash service with success', function() {
+	  		expect(FlashService.success).toHaveBeenCalledWith('Successfully updated!');
+  		});
   	
   	});
   	
   	describe('put method with no id and data', function() {
   		
   		var data = {name: 'fake'};
-  		var response = 'foo';
+  		var f = 'foo';
+  		var response = { flash: f };
   		var error = null;
   		
   		beforeEach(function() {
@@ -555,6 +649,10 @@ describe('Service: ApiService', function () {
   		
   		it('error function should return response', function() {
 	  		expect(error).toEqual(response);
+  		});
+  		
+  		it('should call the flash service with error', function() {
+	  		expect(FlashService.error).toHaveBeenCalledWith(f);
   		});
   	
   	});
@@ -600,6 +698,43 @@ describe('Service: ApiService', function () {
   			expect(result.then).toBeDefined();
   		});
   		
+  	});
+  	
+  	describe('get method that returns an error', function() {
+  		
+  		var f = 'foo';
+  		var response = { flash: f };
+  		var error = null;
+  		
+  		beforeEach(function() {
+	  		httpBackend.when("GET",apiUrl).respond(500,response);
+	  		result = ApiService.payments().get();
+	  		result.error(function(_res) {
+		  		error = _res;
+	  		});
+	  		httpBackend.flush();
+  		});
+  	
+  		afterEach(function() {
+	  		httpBackend.resetExpectations();
+  		});
+  		
+  		it('should call the http get', function() { 
+  			httpBackend.expectGET(apiUrl);
+  		});
+  		
+  		it('should return a promise', function() { 
+  			expect(result.then).toBeDefined();
+  		});
+  		
+  		it('error function should return response', function() {
+	  		expect(error).toEqual(response);
+  		});
+  		
+  		it('should call the flash service with error', function() {
+	  		expect(FlashService.error).toHaveBeenCalledWith(f);
+  		});
+  	
   	});
   	
   });
@@ -666,13 +801,18 @@ describe('Service: ApiService', function () {
   		it('success function should return response', function() {
 	  		expect(success).toEqual(response);
   		});
+  		
+  		it('should call the flash service with success', function() {
+	  		expect(FlashService.success).toHaveBeenCalledWith('Successfully updated!');
+  		});
   	
   	});
   	
   	describe('put method with no id and data', function() {
   		
   		var data = {name: 'fake'};
-  		var response = 'foo';
+  		var f = 'foo';
+  		var response = { flash: f };
   		var error = null;
   		
   		beforeEach(function() {
@@ -698,6 +838,10 @@ describe('Service: ApiService', function () {
   		
   		it('error function should return response', function() {
 	  		expect(error).toEqual(response);
+  		});
+  		
+  		it('should call the flash service with error', function() {
+	  		expect(FlashService.error).toHaveBeenCalledWith(f);
   		});
   	
   	});
@@ -743,6 +887,43 @@ describe('Service: ApiService', function () {
   			expect(result.then).toBeDefined();
   		});
   		
+  	});
+  	
+  	describe('get method that returns an error', function() {
+  		
+  		var f = 'foo';
+  		var response = { flash: f };
+  		var error = null;
+  		
+  		beforeEach(function() {
+	  		httpBackend.when("GET",apiUrl).respond(500,response);
+	  		result = ApiService.clients().get();
+	  		result.error(function(_res) {
+		  		error = _res;
+	  		});
+	  		httpBackend.flush();
+  		});
+  	
+  		afterEach(function() {
+	  		httpBackend.resetExpectations();
+  		});
+  		
+  		it('should call the http get', function() { 
+  			httpBackend.expectGET(apiUrl);
+  		});
+  		
+  		it('should return a promise', function() { 
+  			expect(result.then).toBeDefined();
+  		});
+  		
+  		it('error function should return response', function() {
+	  		expect(error).toEqual(response);
+  		});
+  		
+  		it('should call the flash service with error', function() {
+	  		expect(FlashService.error).toHaveBeenCalledWith(f);
+  		});
+  	
   	});
   	
   });
@@ -808,13 +989,18 @@ describe('Service: ApiService', function () {
   		it('success function should return response', function() {
 	  		expect(success).toEqual(response);
   		});
+  		
+  		it('should call the flash service with success', function() {
+	  		expect(FlashService.success).toHaveBeenCalledWith('Successfully updated!');
+  		});
   	
   	});
   	
   	describe('put method with no id and data', function() {
   		
   		var data = {name: 'fake'};
-  		var response = 'foo';
+  		var f = 'foo';
+  		var response = { flash: f };
   		var error = null;
   		
   		beforeEach(function() {
@@ -840,6 +1026,10 @@ describe('Service: ApiService', function () {
   		
   		it('error function should return response', function() {
 	  		expect(error).toEqual(response);
+  		});
+  		
+  		it('should call the flash service with error', function() {
+	  		expect(FlashService.error).toHaveBeenCalledWith(f);
   		});
   	
   	});
@@ -885,6 +1075,43 @@ describe('Service: ApiService', function () {
   			expect(result.then).toBeDefined();
   		});
   		
+  	});
+  	
+  	describe('get method that returns an error', function() {
+  		
+  		var f = 'foo';
+  		var response = { flash: f };
+  		var error = null;
+  		
+  		beforeEach(function() {
+	  		httpBackend.when("GET",apiUrl).respond(500,response);
+	  		result = ApiService.projects().get();
+	  		result.error(function(_res) {
+		  		error = _res;
+	  		});
+	  		httpBackend.flush();
+  		});
+  	
+  		afterEach(function() {
+	  		httpBackend.resetExpectations();
+  		});
+  		
+  		it('should call the http get', function() { 
+  			httpBackend.expectGET(apiUrl);
+  		});
+  		
+  		it('should return a promise', function() { 
+  			expect(result.then).toBeDefined();
+  		});
+  		
+  		it('error function should return response', function() {
+	  		expect(error).toEqual(response);
+  		});
+  		
+  		it('should call the flash service with error', function() {
+	  		expect(FlashService.error).toHaveBeenCalledWith(f);
+  		});
+  	
   	});
   	
   });
@@ -935,24 +1162,24 @@ describe('Service: ApiService', function () {
 	 
 	 var authUrl = apiLocation + '/api/v1/login';
 	 
+	 var result;
+	 var credentials = {
+		 username: 'test',
+		 password: 'test',
+	 };
+	 var parameters = {
+		 	username: credentials.username,
+		 	password: credentials.password
+	 }
+	 
 	 it('should have a valid path to the api', function() {
 		 expect(ApiService.loginUrl).toEqual(authUrl);
 	 });
 	 
 	 describe('with receiving a user in response', function() {
-		 var result;
-		 var credentials = {
-			 username: 'test',
-			 password: 'test',
-		 };
-		 var parameters = {
-			 	username: credentials.username,
-			 	password: credentials.password
-		 }
-		 
 		 beforeEach(function() {
 	 		httpBackend.when("POST",authUrl, parameters).respond({id: 1, username: 'test', email: 'test@test.com'});
-	 		result = ApiService.login(credentials,parameters._token);
+	 		result = ApiService.login(credentials);
 		 	httpBackend.flush();
 		 		 	
 	 	 }); 
@@ -969,6 +1196,64 @@ describe('Service: ApiService', function () {
 			expect(result.then).toBeDefined();
 		 });	  
 		 
+	 });
+	 
+	 describe('and getting a unauthorized response', function() {
+	 	
+	 	var f = 'foo'
+	 	var response = { flash: f };
+	 	
+	 	beforeEach(function() {
+		 	httpBackend.when("POST",authUrl, parameters).respond(401, response);
+	 		result = ApiService.login(credentials);
+		 	httpBackend.flush();
+	 	});
+	 
+	 	afterEach(function() {
+		 	httpBackend.resetExpectations();
+	 	});
+	 	
+	 	it('should call the api via a http post with correct parameters', function() {
+			 httpBackend.expectPOST(authUrl,parameters);
+		});
+	
+		it('should return a promise', function() {
+			expect(result.then).toBeDefined();
+		});
+		
+		it('should call the flash service with error', function() {
+	  		expect(FlashService.error).toHaveBeenCalledWith(f);
+  		});
+	 
+	 });
+	 
+	 describe('and getting a error response', function() {
+	 	
+	 	var f = 'foo'
+	 	var response = { flash: f };
+	 	
+	 	beforeEach(function() {
+		 	httpBackend.when("POST",authUrl, parameters).respond(500, response);
+	 		result = ApiService.login(credentials);
+		 	httpBackend.flush();
+	 	});
+	 
+	 	afterEach(function() {
+		 	httpBackend.resetExpectations();
+	 	});
+	 	
+	 	it('should call the api via a http post with correct parameters', function() {
+			 httpBackend.expectPOST(authUrl,parameters);
+		});
+	
+		it('should return a promise', function() {
+			expect(result.then).toBeDefined();
+		});
+		
+		it('should call the flash service with error', function() {
+	  		expect(FlashService.error).toHaveBeenCalledWith(f);
+  		});
+	 
 	 });
 	  
   });
@@ -1005,6 +1290,10 @@ describe('Service: ApiService', function () {
 	 it('should return a promise', function() {
 		expect(result.then).toBeDefined();
 	 });
+	 
+	 it('should call the flash service with success', function() {
+	  		expect(FlashService.success).toHaveBeenCalledWith('Successfully logged out!');
+  	 });
 	  
   })
   

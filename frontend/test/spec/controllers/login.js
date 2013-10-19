@@ -5,7 +5,7 @@ describe('Controller: LoginCtrl', function () {
   // load the controller's module
   beforeEach(angular.mock.module('frontendApp'));
 
-  var LoginCtrl, scope, location, authService, authresult;//, csrf;
+  var LoginCtrl, scope, location, authService, authresult, flashService;//, csrf;
   //var token = 'freferfer';
   var deferred, promise;
   
@@ -21,8 +21,9 @@ describe('Controller: LoginCtrl', function () {
 	
   //csrf = { data: JSON.stringify(token) };
    
-  beforeEach(inject(function (_AuthenticationService_, $controller, $rootScope, $location, $q) {
+  beforeEach(inject(function (_AuthenticationService_, _FlashService_, $controller, $rootScope, $location, $q) {
     authService = _AuthenticationService_;
+    flashService = _FlashService_;
     scope = $rootScope.$new();
     location = $location;
     //q = $q;
@@ -46,10 +47,14 @@ describe('Controller: LoginCtrl', function () {
     expect(scope.credentials).toEqual(expectedCredentials);
   });
   
- /* it('should have the csrf token', function() {
-	 //expect(scope.csrf).toEqual(token); 
+  it('should have the a flash on the scope', function() {
+	 expect(scope.flash).toBeDefined();
   });
-  */
+  
+  it('should have a flash on the scope that is the flashservice', function() { 
+  	expect(scope.flash).toEqual(flashService);
+  });
+  
   
   it('should have the apiService available', function () {
     expect(authService).toBeDefined();
