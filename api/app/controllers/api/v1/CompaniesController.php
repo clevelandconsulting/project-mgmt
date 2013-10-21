@@ -20,7 +20,11 @@ class CompaniesController extends apiController {
 	 */
 	public function index()
 	{
-        return $this->company->all();
+	   $content = $this->company->all();
+	   //$status = 200;
+	   //$headers = array('Content-Type'=>'application/json');
+	   return $this->json($content);//,$status,$headers);
+        //return ;
 	}
 
 	/**

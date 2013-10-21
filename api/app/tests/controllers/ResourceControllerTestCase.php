@@ -81,8 +81,9 @@ class ResourceControllerTestCase extends ControllerTestCase {
 			$this->mockedRepository->shouldReceive('all')->once()->andReturn($all);
 			
 			$response = $this->apiCall("GET",'');
+			$content = json_decode($response->getContent());
 			
-			$this->assertEquals($all,$response->original);
+			$this->assertEquals($all,$content);//$response->original);
 		}
 	}
 	
