@@ -11,6 +11,7 @@ class PaymentsController extends apiController {
 	protected $payment;
 
 	public function __construct(PaymentRepositoryInterface $payment) {
+		parent::__construct();
 		$this->payment = $payment;
 	}
 
@@ -21,7 +22,9 @@ class PaymentsController extends apiController {
 	 */
 	public function index()
 	{
-        return $this->payment->all();
+		return $this->response(function($object) {
+			return $object->all();
+		}, $this->payment);
 	}
 
 	/**
@@ -31,7 +34,7 @@ class PaymentsController extends apiController {
 	 */
 	public function create()
 	{
-       
+       return $this->json('',201);
 	}
 
 	/**
@@ -52,7 +55,11 @@ class PaymentsController extends apiController {
 	 */
 	public function show($id)
 	{
-       return $this->payment->find($id);
+	
+		return $this->response(function($object, $id) {
+			return $object->find($id);
+		}, $this->payment, $id);
+       //return $this->payment->find($id);
 	}
 
 

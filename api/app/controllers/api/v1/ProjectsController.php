@@ -10,6 +10,7 @@ class ProjectsController extends apiController {
 	protected $project;
 
 	public function __construct(ProjectRepositoryInterface $project) {
+		parent::__construct();
 		$this->project = $project;
 	}
 
@@ -20,7 +21,9 @@ class ProjectsController extends apiController {
 	 */
 	public function index()
 	{
-        return $this->project->all();
+		return $this->response(function($object) {
+			return $object->all();
+		}, $this->project);
 	}
 
 	/**
@@ -31,7 +34,11 @@ class ProjectsController extends apiController {
 	 */
 	public function show($id)
 	{
-        return $this->project->find($id);
+		return $this->response(function($object, $id) {
+			return $object->find($id);
+		}, $this->project, $id);
+		
+        //return $this->project->find($id);
 	}
 
 

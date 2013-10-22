@@ -4,12 +4,14 @@ namespace api\v1;
 
 use Cci\Repositories\Interfaces\CompanyRepositoryInterface;
 use Response;
+use Request;
 
 class CompaniesController extends apiController {
 
 	protected $company;
 
 	public function __construct(CompanyRepositoryInterface $company) {
+		parent::__construct();
 		$this->company = $company;
 	}
 
@@ -20,11 +22,17 @@ class CompaniesController extends apiController {
 	 */
 	public function index()
 	{
-	   $content = $this->company->all();
-	   //$status = 200;
-	   //$headers = array('Content-Type'=>'application/json');
-	   return $this->json($content);//,$status,$headers);
-        //return ;
+		return $this->response(function($object) {
+			return $object->all();
+		}, $this->company);
+		/*
+	   if ( $this->isValidMediaRequest('json') ) {
+		   $content = $this->company->all();
+		   return $this->json($content);
+	   }
+	   else {
+		   return $this->badMediaType();
+	   }*/
 	}
 
 	/**
@@ -35,7 +43,17 @@ class CompaniesController extends apiController {
 	 */
 	public function show($id)
 	{
-        return $this->company->find($id);
+		return $this->response(function($object, $id) {
+			return $object->find($id);
+		}, $this->company, $id);
+		/*
+		if ( $this->isValidMediaRequest('json') ) {
+	        return $this->json($this->company->find($id));
+		}
+		else {
+			return $this->badMediaType();
+		}
+		*/
 	}
 
 	/**
@@ -59,5 +77,11 @@ class CompaniesController extends apiController {
 		
 		return Response::json(array('flash'=>$flash),$status);
 	}
+	
+	  /**************************************************************
+	  *
+	  *  Return a valid response using a call back to get the content
+	  *
+	  **************************************************************/
 
 }

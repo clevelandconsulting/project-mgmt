@@ -10,6 +10,7 @@ class TimesController extends apiController {
 	protected $time;
 	
 	public function __construct(TimeRepositoryInterface $time) {
+		parent::__construct();
 		$this->time = $time;
 	}
 
@@ -20,7 +21,9 @@ class TimesController extends apiController {
 	 */
 	public function index()
 	{
-        return $this->time->all();
+		return $this->response(function($object) {
+			return $object->all();
+		}, $this->time);
 	}
 
 	/**
@@ -30,7 +33,12 @@ class TimesController extends apiController {
 	 */
 	public function create()
 	{
-        
+		/*
+		return $this->response(function() {
+			return '';
+		});
+		*.
+        return $this->json('',201);
 	}
 
 	/**
@@ -51,7 +59,10 @@ class TimesController extends apiController {
 	 */
 	public function show($id)
 	{
-        return $this->time->find($id);
+		return $this->response(function($object, $id) {
+			return $object->find($id);
+		}, $this->time, $id);
+        //return $this->time->find($id);
 	}
 
 	/**
