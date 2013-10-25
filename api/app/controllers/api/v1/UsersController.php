@@ -11,6 +11,7 @@ use Response;
 class UsersController extends apiController {
 
 	public function __construct(LoginServiceInterface $ls, User $user) {
+		parent::__construct();
 		$this->loginService = $ls;
 		$this->user = $user;
 	}
@@ -39,7 +40,11 @@ class UsersController extends apiController {
 	 */
 	public function show($id)
 	{
-		return $this->user->find($id);
+	
+		return $this->response(function($object, $id) {
+			return $object->find($id);
+		}, $this->user, $id);
+		//return $this->user->find($id);
 		//$user = $this->user->find($id)->toArray();
 		//dd($user);
         //return Response::json(array('user'=>$user));
